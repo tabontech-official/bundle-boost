@@ -29,8 +29,29 @@ import { findCampaign, type CampaignDetail } from "../repositories/campaign.repo
 
 export type SyncOutcome = { ok: true } | { ok: false; error: string };
 
+/** The text shoppers see at checkout (the Function's message). */
 export function discountTitle(campaign: Pick<CampaignDetail, "discountLabel" | "name">, defaultLabel: string) {
   return campaign.discountLabel || defaultLabel || campaign.name;
+}
+
+const MAX_TITLE_LENGTH = 255;
+
+/**
+ * The discount's title in Shopify, which must be unique among the store's
+ * automatic discounts: the shopper-facing label plus the campaign name, e.g.
+ * "Volume discount · Socks bundle" (several campaigns share the default
+ * label). `unique` adds the campaign id for the rare name clash.
+ */
+export function shopifyDiscountTitle(
+  campaign: Pick<CampaignDetail, "id" | "discountLabel" | "name">,
+  defaultLabel: string,
+  { unique = false }: { unique?: boolean } = {},
+) {
+  const label = discountTitle(campaign, defaultLabel);
+  const name = campaign.name.trim();
+  const base = name && name !== label ? `${label} · ${name}` : label;
+  const suffix = unique ? ` (${campaign.id.slice(-6)})` : "";
+  return base.slice(0, MAX_TITLE_LENGTH - suffix.length) + suffix;
 }
 
 export function buildDiscountInput(
@@ -43,10 +64,10 @@ export function buildDiscountInput(
   },
   now = new Date(),
 ): DiscountInput {
-  const title = discountTitle(campaign, settings.defaultDiscountLabel);
+  const label = discountTitle(campaign, settings.defaultDiscountLabel);
   const { json } = serializeFunctionConfig({
     discountType: campaign.discountType,
-    message: title,
+    message: label,
     products: campaign.products.map((p) => ({
       productGid: p.productGid,
       variantGids: p.variants.map((v) => v.variantGid),
@@ -55,7 +76,7 @@ export function buildDiscountInput(
     purchaseType: campaign.purchaseType,
   });
   return {
-    title,
+    title: shopifyDiscountTitle(campaign, settings.defaultDiscountLabel),
     startsAt: campaign.startsAt && campaign.startsAt > now ? campaign.startsAt : now,
     endsAt: campaign.endsAt,
     combinesWith: {
@@ -101,11 +122,24 @@ async function reconcile(admin: AdminGraphqlClient, campaign: CampaignDetail) {
   const settings = await prisma.shopSettings.findUniqueOrThrow({
     where: { shopId: campaign.shopId },
   });
-  const input = buildDiscountInput(campaign, settings);
+  let input = buildDiscountInput(campaign, settings);
+  // Retried once with the campaign id in the title if another discount has it.
+  const withUniqueTitle = () => ({
+    ...input,
+    title: shopifyDiscountTitle(campaign, settings.defaultDiscountLabel, { unique: true }),
+  });
+  const isDuplicateTitle = (error: unknown) => error instanceof DiscountUserError && error.isDuplicateTitle;
 
   if (id) {
     try {
-      const updated = await updateAutomaticDiscount(admin, id, input);
+      let updated;
+      try {
+        updated = await updateAutomaticDiscount(admin, id, input);
+      } catch (error) {
+        if (!isDuplicateTitle(error)) throw error;
+        input = withUniqueTitle();
+        updated = await updateAutomaticDiscount(admin, id, input);
+      }
       // Pausing sets an end date in Shopify (status EXPIRED); clearing it on
       // update usually restores ACTIVE, but activate explicitly if not.
       if (updated?.status === "EXPIRED" && (!input.endsAt || input.endsAt > new Date())) {
@@ -117,8 +151,12 @@ async function reconcile(admin: AdminGraphqlClient, campaign: CampaignDetail) {
       logger.warn("Shopify discount missing; recreating", { campaignId: campaign.id });
     }
   }
-  const created = await createAutomaticDiscount(admin, input);
-  return created.discountId;
+  try {
+    return (await createAutomaticDiscount(admin, input)).discountId;
+  } catch (error) {
+    if (!isDuplicateTitle(error)) throw error;
+    return (await createAutomaticDiscount(admin, withUniqueTitle())).discountId;
+  }
 }
 
 export async function syncCampaignDiscount(

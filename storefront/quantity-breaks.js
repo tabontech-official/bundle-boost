@@ -47,7 +47,7 @@
     var PRICE_SELECTOR =
       'product-price, .price, .price-item, [id^="price-"], [data-product-price], [data-price], .product__price, .product-price, .product-single__price';
     var section = widget.closest(".shopify-section, section") || document;
-    var themePrice = null; // { el, html } while it shows the tier price
+    var themePrices = []; // [{ el, html }] while they show the tier price
     var applying = false;
 
     function digitsOf(text) {
@@ -66,42 +66,31 @@
       return Boolean(el.offsetWidth || el.offsetHeight || el.getClientRects().length);
     }
 
-    function findThemePrice(cents) {
+    // Every place the section shows the price (e.g. under the title and in a
+    // sticky add-to-cart bar), each as the innermost element holding it.
+    function findThemePrices(cents) {
       var candidates = Array.prototype.filter.call(section.querySelectorAll(PRICE_SELECTOR), function (el) {
         return !widget.contains(el) && !el.closest("[data-bb-breaks]") && isVisible(el) && showsPrice(el, cents);
       });
-      // The innermost match: the element that holds just the amount.
-      return (
-        candidates.find(function (el) {
-          return !candidates.some(function (other) {
-            return other !== el && el.contains(other);
-          });
-        }) || null
-      );
+      return candidates.filter(function (el) {
+        return !candidates.some(function (other) {
+          return other !== el && el.contains(other);
+        });
+      });
     }
 
-    function restoreThemePrice() {
-      if (!themePrice) return;
-      // Only if it still shows our price: never overwrite the theme's own update.
-      if (themePrice.el.isConnected && themePrice.el.querySelector(".bb-theme-price__now")) {
-        applying = true;
-        themePrice.el.innerHTML = themePrice.html;
-        applying = false;
-      }
-      themePrice = null;
-    }
-
-    function renderThemePrice(variantId) {
-      var price = prices[variantId];
-      var offer = selected && selected.closest("[data-bb-offer]");
-      restoreThemePrice();
-      if (!selected || !offer || offer.hidden || price === undefined) return;
-      var unit = tierUnitPrice(offer.dataset.type, parseFloat(selected.dataset.value), price);
-      if (unit === null || unit >= price) return;
-      var el = findThemePrice(price);
-      if (!el) return;
-      themePrice = { el: el, html: el.innerHTML };
+    function restoreThemePrices() {
       applying = true;
+      themePrices.forEach(function (item) {
+        // Only if it still shows our price: never overwrite the theme's own update.
+        if (item.el.isConnected && item.el.querySelector(".bb-theme-price__now")) item.el.innerHTML = item.html;
+      });
+      applying = false;
+      themePrices = [];
+    }
+
+    function showTierPrice(el, price, unit) {
+      themePrices.push({ el: el, html: el.innerHTML });
       el.textContent = "";
       var was = document.createElement("s");
       was.className = "bb-theme-price__was";
@@ -112,8 +101,29 @@
       el.appendChild(was);
       el.appendChild(document.createTextNode(" "));
       el.appendChild(now);
-      el.setAttribute("data-bb-tier-price", "");
+    }
+
+    function renderThemePrice(variantId) {
+      var price = prices[variantId];
+      var offer = selected && selected.closest("[data-bb-offer]");
+      restoreThemePrices();
+      if (!selected || !offer || offer.hidden || price === undefined) return;
+      var unit = tierUnitPrice(offer.dataset.type, parseFloat(selected.dataset.value), price);
+      if (unit === null || unit >= price) return;
+      applying = true;
+      findThemePrices(price).forEach(function (el) {
+        showTierPrice(el, price, unit);
+      });
       applying = false;
+    }
+
+    function showingTierPrice() {
+      return (
+        themePrices.length > 0 &&
+        themePrices.every(function (item) {
+          return item.el.isConnected && item.el.querySelector(".bb-theme-price__now");
+        })
+      );
     }
 
     function currentVariantId() {
@@ -126,12 +136,10 @@
     if (window.MutationObserver && section !== document) {
       var pending = false;
       new MutationObserver(function () {
-        if (applying || pending || !selected) return;
-        if (themePrice && themePrice.el.isConnected && themePrice.el.hasAttribute("data-bb-tier-price")) return;
+        if (applying || pending || !selected || showingTierPrice()) return;
         pending = true;
         window.requestAnimationFrame(function () {
           pending = false;
-          themePrice = null; // the theme replaced it
           renderThemePrice(currentVariantId());
         });
       }).observe(section, { childList: true, subtree: true, characterData: true });

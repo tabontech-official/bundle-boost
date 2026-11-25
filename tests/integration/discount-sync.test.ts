@@ -99,7 +99,8 @@ describe("discount sync on status changes", () => {
     expect(campaign.lastSyncedAt).toBeInstanceOf(Date);
     const discount = store.discounts.get(campaign.shopifyDiscountId!);
     expect(discount).toMatchObject({
-      title: "Socks bundle",
+      // Shopify title: label + campaign name (unique per store); shoppers see the label.
+      title: "Socks bundle · Bulk socks",
       functionHandle: "bundleboost-quantity-breaks",
       discountClasses: ["PRODUCT"],
       endsAt: null,
@@ -120,7 +121,28 @@ describe("discount sync on status changes", () => {
   it("falls back to the shop's default label as the discount title", async () => {
     const { id } = await activeCampaign({ discountLabel: "" });
     const campaign = await getCampaign(ctx.shopId, id);
-    expect(store.discounts.get(campaign.shopifyDiscountId!)!.title).toBe("Volume discount");
+    const discount = store.discounts.get(campaign.shopifyDiscountId!)!;
+    expect(discount.title).toBe("Volume discount · Bulk socks");
+    expect(JSON.parse(discount.config).m).toBe("Volume discount");
+  });
+
+  it("syncs several campaigns that use the default label (titles must be unique in Shopify)", async () => {
+    const first = await activeCampaign({ discountLabel: "" });
+    const second = await activeCampaign({ discountLabel: "", name: "Mug deal", products: [{ productGid: productGid(2), variantGids: [] }] });
+    expect(first.result.sync.discount).toEqual({ ok: true });
+    expect(second.result.sync.discount).toEqual({ ok: true });
+    const titles = [...store.discounts.values()].map((d) => d.title).sort();
+    expect(titles).toEqual(["Volume discount · Bulk socks", "Volume discount · Mug deal"]);
+  });
+
+  it("adds the campaign id when another discount already has the same title", async () => {
+    const first = await activeCampaign();
+    const second = await activeCampaign({ products: [{ productGid: productGid(2), variantGids: [] }] });
+    expect(first.result.sync.discount).toEqual({ ok: true });
+    expect(second.result.sync.discount).toEqual({ ok: true });
+    const campaign = await getCampaign(ctx.shopId, second.id);
+    expect(campaign.syncStatus).toBe("SYNCED");
+    expect(store.discounts.get(campaign.shopifyDiscountId!)!.title).toBe(`Socks bundle · Bulk socks (${second.id.slice(-6)})`);
   });
 
   it("pause deactivates, resume reactivates the same discount", async () => {
@@ -154,7 +176,7 @@ describe("discount sync on status changes", () => {
     );
     const campaign = await getCampaign(ctx.shopId, id);
     const discount = store.discounts.get(campaign.shopifyDiscountId!)!;
-    expect(discount.title).toBe("New label");
+    expect(discount.title).toBe("New label · Bulk socks");
     expect(JSON.parse(discount.config)).toMatchObject({ p: { "2": ["201"] }, tiers: [[3, "20.00"]] });
   });
 

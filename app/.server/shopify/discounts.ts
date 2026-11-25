@@ -17,6 +17,12 @@ export class DiscountUserError extends ShopifyApiError {
   constructor(public readonly userErrors: UserError[]) {
     super(userErrors.map((e) => e.message).join("; "));
   }
+  /** Another automatic discount in the store already has this title. */
+  get isDuplicateTitle() {
+    return this.userErrors.some(
+      (e) => e.field?.includes("title") || /title must be unique/i.test(e.message),
+    );
+  }
   /** Shopify reports a missing discount as a userError on the `id` field. */
   get isNotFound() {
     return this.userErrors.some((e) => e.field?.includes("id"));

@@ -143,6 +143,9 @@ export function createAdminDouble(catalog: FakeProduct[]) {
 
       if (op === "BundleBoostDiscountCreate") {
         if (failure) return Response.json({ data: { discountAutomaticAppCreate: { automaticAppDiscount: null, userErrors: [userError(failure.message)] } } });
+        if ([...discounts.values()].some((other) => other.title === v.discount.title)) {
+          return Response.json({ data: { discountAutomaticAppCreate: { automaticAppDiscount: null, userErrors: [userError("Title must be unique for automatic discount.", ["automaticAppDiscount", "title"])] } } });
+        }
         const id = `gid://shopify/DiscountAutomaticNode/${nextDiscount++}`;
         const d = v.discount;
         discounts.set(id, {
@@ -165,6 +168,9 @@ export function createAdminDouble(catalog: FakeProduct[]) {
         const existing = discounts.get(v.id);
         if (!existing || failure) {
           return Response.json({ data: { discountAutomaticAppUpdate: { automaticAppDiscount: null, userErrors: [existing ? userError(failure!.message) : userError("Discount does not exist", ["id"])] } } });
+        }
+        if ([...discounts.values()].some((other) => other.id !== existing.id && other.title === v.discount.title)) {
+          return Response.json({ data: { discountAutomaticAppUpdate: { automaticAppDiscount: null, userErrors: [userError("Title must be unique for automatic discount.", ["automaticAppDiscount", "title"])] } } });
         }
         Object.assign(existing, {
           title: v.discount.title,
