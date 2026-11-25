@@ -57,6 +57,22 @@ const CONTRACT_QUERY = `#graphql
     }
   }`;
 
+// Without the email: protected customer data is approved per field, and a
+// field the app isn't approved for fails the whole query.
+const CONTRACT_QUERY_NO_EMAIL = `#graphql
+  query BundleBoostSubscriptionContractNoEmail($id: ID!) {
+    subscriptionContract(id: $id) {${CONTRACT_FIELDS}
+      customer {
+        id
+        displayName
+      }
+      originOrder {
+        id
+        name
+      }
+    }
+  }`;
+
 // Same contract without customer/order details, for stores where the app
 // hasn't been granted protected customer data.
 const CONTRACT_QUERY_MINIMAL = `#graphql
@@ -72,18 +88,22 @@ export type ShopifyContract = {
   currencyCode: string;
   billingPolicy: { interval: string; intervalCount: number };
   lines: { nodes: { title: string; variantTitle: string | null; quantity: number; currentPrice: { amount: string } }[] };
-  customer?: { id: string; displayName: string | null; defaultEmailAddress: { emailAddress: string } | null } | null;
+  customer?: { id: string; displayName: string | null; defaultEmailAddress?: { emailAddress: string } | null } | null;
   originOrder?: { id: string; name: string } | null;
 };
 
+/** The contract with as much customer detail as the app is approved for. */
 export async function fetchContract(admin: AdminGraphqlClient, id: string): Promise<ShopifyContract | null> {
-  try {
-    const data = await adminQuery<{ subscriptionContract: ShopifyContract | null }>(admin, CONTRACT_QUERY, { id });
-    return data.subscriptionContract;
-  } catch {
-    const data = await adminQuery<{ subscriptionContract: ShopifyContract | null }>(admin, CONTRACT_QUERY_MINIMAL, { id });
-    return data.subscriptionContract;
+  const queries = [CONTRACT_QUERY, CONTRACT_QUERY_NO_EMAIL, CONTRACT_QUERY_MINIMAL];
+  for (const [i, query] of queries.entries()) {
+    try {
+      const data = await adminQuery<{ subscriptionContract: ShopifyContract | null }>(admin, query, { id });
+      return data.subscriptionContract;
+    } catch (error) {
+      if (i === queries.length - 1) throw error;
+    }
   }
+  return null;
 }
 
 const BILLING_CYCLE = `#graphql

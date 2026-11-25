@@ -61,8 +61,19 @@ type Result =
 
 const SCOPE_LABELS: Record<string, string> = {
   read_products: "Read products",
-  write_discounts: "Manage discounts",
+  write_products: "Manage products",
   read_discounts: "Read discounts",
+  write_discounts: "Manage discounts",
+  write_purchase_options: "Manage subscription plans",
+  read_own_subscription_contracts: "Read subscriptions",
+  write_own_subscription_contracts: "Manage subscriptions",
+  read_customer_payment_methods: "Read customers’ saved payment methods",
+  read_customers: "Read customers",
+  write_customers: "Send payment update emails",
+  read_orders: "Read orders",
+  customer_read_customers: "Customer portal: read the customer",
+  customer_read_own_subscription_contracts: "Customer portal: read subscriptions",
+  customer_write_own_subscription_contracts: "Customer portal: change subscriptions",
 };
 
 const plural = (n: number, word: string) => `${n} ${word}${n === 1 ? "" : "s"}`;
@@ -192,7 +203,19 @@ export default function Settings() {
               <ul className="bb-facts">
                 <li>
                   <strong>What we store</strong>
-                  <span>Your campaigns, widget settings and an activity log. No customer personal data.</span>
+                  <span>Your campaigns, subscription plans, widget settings and an activity log.</span>
+                </li>
+                <li>
+                  <strong>Subscribers</strong>
+                  <span>
+                    For each subscription: the customer’s name and email, the first order number, the items and the
+                    renewal history, to show your subscriber list and charge renewals. Card details stay with Shopify
+                    and delivery addresses aren’t stored.
+                  </span>
+                </li>
+                <li>
+                  <strong>Customer requests</strong>
+                  <span>When a customer asks your store to erase their data, BundleBoost removes their details too.</span>
                 </li>
                 <li>
                   <strong>If you uninstall</strong>
@@ -200,7 +223,10 @@ export default function Settings() {
                 </li>
                 <li>
                   <strong>Discounts in Shopify</strong>
-                  <span>Each campaign is a Shopify automatic discount, visible under Discounts in your admin.</span>
+                  <span>
+                    Each campaign is a Shopify automatic discount, visible under Discounts in your admin. Subscription
+                    plans are Shopify purchase options on your products.
+                  </span>
                 </li>
               </ul>
             </EditorCard>

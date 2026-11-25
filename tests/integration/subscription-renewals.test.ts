@@ -36,6 +36,17 @@ const webhook = (kind: "success" | "failure" | "challenged", extra: Record<strin
   handleBillingAttemptWebhook(store.client, shopId, kind, { admin_graphql_api_subscription_contract_id: CONTRACT, ...extra }, NOW);
 
 describe("subscription contracts", () => {
+  it("keeps the customer's name and first order when the app isn't approved for email", async () => {
+    store.failNext("BundleBoostSubscriptionContract", "This app is not approved to use the emailAddress field.");
+    await subscribe(10);
+    expect(await contract()).toMatchObject({
+      customerName: "Ayesha Khan",
+      customerEmail: null,
+      originOrderName: "#1001",
+      customerGid: "gid://shopify/Customer/7",
+    });
+  });
+
   it("stores the subscription with its customer, items, amount and next renewal", async () => {
     await subscribe(10);
     expect(await contract()).toMatchObject({

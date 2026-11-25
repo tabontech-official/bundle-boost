@@ -160,7 +160,9 @@
                     {%- if offer.type == 'percentage' -%}
                       {{ 'quantity_breaks.save_percent' | t: percent: tier.value }}
                     {%- elsif same_currency -%}
-                      {{ 'quantity_breaks.save_amount_each' | t: amount: off_cents | money }}
+                      {%- comment -%} Format the amount first: a trailing `| money` would apply to the whole sentence. {%- endcomment -%}
+                      {%- assign off_money = off_cents | money -%}
+                      {{ 'quantity_breaks.save_amount_each' | t: amount: off_money }}
                     {%- endif -%}
                   </span>
                 {%- endif -%}

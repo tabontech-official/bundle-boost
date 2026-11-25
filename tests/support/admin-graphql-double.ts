@@ -267,7 +267,14 @@ export function createAdminDouble(catalog: FakeProduct[]) {
           return Response.json({ data: { sellingPlanGroupDelete: { deletedSellingPlanGroupId: v.id, userErrors: [] } } });
         }
       }
-      if (op === "BundleBoostSubscriptionContract" || op === "BundleBoostSubscriptionContractMinimal") {
+      if (failure && op.startsWith("BundleBoostSubscriptionContract")) {
+        return Response.json({ errors: [{ message: failure.message }] });
+      }
+      if (
+        op === "BundleBoostSubscriptionContract" ||
+        op === "BundleBoostSubscriptionContractNoEmail" ||
+        op === "BundleBoostSubscriptionContractMinimal"
+      ) {
         const c = contracts.get(v.id);
         if (!c) return Response.json({ data: { subscriptionContract: null } });
         const next = [...Array(500).keys()].map((i) => i + 1).find((i) => !c.billed.has(i) && !c.skipped.has(i)) ?? 1;
@@ -280,12 +287,14 @@ export function createAdminDouble(catalog: FakeProduct[]) {
               currencyCode: "USD",
               billingPolicy: { interval: c.interval, intervalCount: c.intervalCount },
               lines: { nodes: [{ title: "Coffee beans", variantTitle: "1 kg", quantity: 2, currentPrice: { amount: c.linePrice } }] },
-              ...(op === "BundleBoostSubscriptionContract"
+              ...(op !== "BundleBoostSubscriptionContractMinimal"
                 ? {
                     customer: c.customer && {
                       id: c.customer.id,
                       displayName: c.customer.displayName,
-                      defaultEmailAddress: { emailAddress: c.customer.email },
+                      ...(op === "BundleBoostSubscriptionContract"
+                        ? { defaultEmailAddress: { emailAddress: c.customer.email } }
+                        : {}),
                     },
                     originOrder: { name: "#1001" },
                   }
