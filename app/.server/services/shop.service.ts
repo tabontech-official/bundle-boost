@@ -1,3 +1,4 @@
+import { Prisma, type Shop } from "@prisma/client";
 import prisma from "../../db.server";
 import { logger } from "../logger";
 import { fetchShopInfo } from "../shopify/shop-info";
@@ -28,24 +29,39 @@ export async function onShopAuthenticated(
     select: { uninstalledAt: true },
   });
 
-  const shop = await prisma.shop.upsert({
-    where: { domain },
-    create: {
-      domain,
-      name: info?.name,
-      currencyCode: info?.currencyCode,
-      settings: { create: {} },
-      widgetSettings: { create: {} },
-      subscription: { create: {} },
-    },
-    update: {
-      uninstalledAt: null,
-      ...(info ? { name: info.name, currencyCode: info.currencyCode } : {}),
-    },
-  });
+  let shop: Shop;
+  try {
+    shop = await prisma.shop.upsert({
+      where: { domain },
+      create: {
+        domain,
+        name: info?.name,
+        currencyCode: info?.currencyCode,
+        settings: { create: {} },
+        widgetSettings: { create: {} },
+        subscription: { create: {} },
+      },
+      update: {
+        uninstalledAt: null,
+        ...(info ? { name: info.name, currencyCode: info.currencyCode } : {}),
+      },
+    });
+  } catch (error) {
+    if (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error.code === "P2002"
+    ) {
+      // Concurrently created by a parallel loader (e.g. app.tsx and app._index.tsx running at the exact same moment).
+      const found = await prisma.shop.findUnique({ where: { domain } });
+      if (!found) throw error;
+      shop = found;
+    } else {
+      throw error;
+    }
+  }
 
   // Rows may be missing for shops created before a model was introduced.
-  await Promise.all([
+  await Promise.allSettled([
     prisma.shopSettings.upsert({
       where: { shopId: shop.id },
       create: { shopId: shop.id },
