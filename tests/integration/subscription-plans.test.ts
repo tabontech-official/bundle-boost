@@ -3,6 +3,7 @@ import {
   createSubscriptionPlan,
   deleteSubscriptionPlan,
   getSubscriptionPlan,
+  productsWithSubscriptionPlans,
   syncSubscriptionPlan,
   updateSubscriptionPlan,
   type PlanContext,
@@ -117,5 +118,20 @@ describe("subscription plans", () => {
     await deleteSubscriptionPlan(ctx, id);
     expect(store.sellingPlanGroups.has(plan.shopifyGroupId!)).toBe(false);
     expect(await prisma.subscriptionPlan.count()).toBe(0);
+  });
+});
+
+describe("products with subscription plans (campaign editor)", () => {
+  it("lists products on plans that are live in Shopify, once each", async () => {
+    await createSubscriptionPlan(ctx, input());
+    await createSubscriptionPlan(ctx, input({ name: "Weekly", productGids: [productGid(1), productGid(2)] }));
+    expect((await productsWithSubscriptionPlans(ctx.shopId)).sort()).toEqual([productGid(1), productGid(2)].sort());
+  });
+
+  it("leaves out plans that aren't saved to Shopify", async () => {
+    store.failNext("BundleBoostSellingPlanGroupCreate", "Shopify is down");
+    const { sync } = await createSubscriptionPlan(ctx, input());
+    expect(sync.ok).toBe(false);
+    expect(await productsWithSubscriptionPlans(ctx.shopId)).toEqual([]);
   });
 });

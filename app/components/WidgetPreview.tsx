@@ -10,7 +10,7 @@ import type { WidgetSettingsInput } from "../lib/settings-validation";
 export type PreviewTier = { qty: number; value: number; label: string };
 
 // Sample selling plans for the purchase-options preview. On the storefront
-// these come from the product's own plans (e.g. Shopify Subscriptions).
+// these come from the product's BundleBoost subscription plans.
 export type PreviewPlan = { id: string; name: string; discount: string; percent: number | null };
 const SAMPLE_PLANS: PreviewPlan[] = [
   { id: "1", name: "Delivery every month", discount: "10%", percent: 10 },

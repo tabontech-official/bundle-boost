@@ -35,7 +35,8 @@ export const EMPTY_CAMPAIGN: CampaignFormState = {
     { minQuantity: "3", value: "10", label: "" },
   ],
   purchaseType: "BOTH",
-  recurringCycleLimit: "1",
+  // Subscribers get the volume discount on every order (renewals too).
+  recurringCycleLimit: "0",
 };
 
 type ActionResult =
@@ -119,6 +120,7 @@ export function CampaignForm({
   footer,
   maxTiers,
   planName,
+  planProductGids = [],
 }: {
   mode: "create" | "edit";
   initial: CampaignFormState;
@@ -133,6 +135,8 @@ export function CampaignForm({
   /** Tier allowance of the shop's plan, and the plan's name for the prompt. */
   maxTiers?: number;
   planName?: string;
+  /** Products offered on a BundleBoost subscription plan. */
+  planProductGids?: string[];
 }) {
   const fetcher = useFetcher<ActionResult>();
   const shopify = useAppBridge();
@@ -163,6 +167,14 @@ export function CampaignForm({
     setState((s) => ({ ...s, [key]: value }));
     setClientErrors({});
   };
+
+  // Subscription options only matter for products sold on a subscription plan
+  // (or a campaign already set to something other than the default).
+  const hasSubscriptionPlans = state.products.some((p) => planProductGids.includes(p.productGid));
+  const showSubscriptionOptions = hasSubscriptionPlans || initial.purchaseType !== "BOTH";
+  const newPlanHref = `/app/subscriptions/new?products=${encodeURIComponent(
+    state.products.map((p) => p.productGid.slice(p.productGid.lastIndexOf("/") + 1)).join(","),
+  )}`;
 
   function submit() {
     const payload = toPayload(state);
@@ -302,67 +314,91 @@ export function CampaignForm({
             <EditorCard
               num="04"
               title="Subscriptions"
-              hint="Choose whether the discount applies to one-time purchases, subscriptions, or both. Subscriptions come from a subscription app on your store, such as Shopify Subscriptions."
+              hint={
+                showSubscriptionOptions
+                  ? "Choose whether the discount applies to one-time purchases, subscriptions, or both. Subscriptions are bought on your BundleBoost subscription plans."
+                  : undefined
+              }
             >
-              <div className="bb-fields">
-                <Segment
-                  name="purchaseType"
-                  label="Applies to"
-                  value={state.purchaseType}
-                  options={[
-                    ["BOTH", "Both"],
-                    ["ONE_TIME", "One-time purchases"],
-                    ["SUBSCRIPTION", "Subscriptions"],
-                  ]}
-                  disabled={readOnly}
-                  onChange={(v) => set("purchaseType", v)}
-                  hint={
-                    errors.purchaseType ??
-                    (state.purchaseType === "SUBSCRIPTION"
-                      ? "Subscribers only. Tiers can start at 1 item, e.g. 10% off any subscription."
-                      : undefined)
-                  }
-                />
-                {state.purchaseType !== "ONE_TIME" && (
-                  <>
-                    <Segment
-                      name="recurringMode"
-                      label="Subscription orders that get the discount"
-                      value={cycleMode(state.recurringCycleLimit)}
-                      options={[
-                        ["FIRST", "First order only"],
-                        ["LIMITED", "A set number"],
-                        ["ALL", "Every order"],
-                      ]}
-                      disabled={readOnly}
-                      onChange={(m) => set("recurringCycleLimit", m === "FIRST" ? "1" : m === "ALL" ? "0" : "3")}
-                      hint={
-                        cycleMode(state.recurringCycleLimit) === "ALL"
-                          ? "The first order and every renewal are discounted."
-                          : cycleMode(state.recurringCycleLimit) === "FIRST"
-                            ? "Only the first order is discounted; renewals are charged full price."
-                            : undefined
-                      }
-                    />
-                    {cycleMode(state.recurringCycleLimit) === "LIMITED" && (
-                      <div className="bb-fieldnarrow">
-                        <NumberField
-                          label="Number of orders"
-                          suffix="orders"
-                          min={2}
-                          max={CAMPAIGN_LIMITS.maxRecurringCycles}
-                          step={1}
-                          value={state.recurringCycleLimit}
-                          details="Counts the first order. 3 = the first order and the next 2 renewals."
-                          error={errors.recurringCycleLimit}
-                          disabled={readOnly}
-                          onChange={(v) => set("recurringCycleLimit", v)}
-                        />
-                      </div>
-                    )}
-                  </>
-                )}
-              </div>
+              {showSubscriptionOptions ? (
+                <div className="bb-fields">
+                  <Segment
+                    name="purchaseType"
+                    label="Applies to"
+                    value={state.purchaseType}
+                    options={[
+                      ["BOTH", "Both"],
+                      ["ONE_TIME", "One-time purchases"],
+                      ["SUBSCRIPTION", "Subscriptions"],
+                    ]}
+                    disabled={readOnly}
+                    onChange={(v) => set("purchaseType", v)}
+                    hint={
+                      errors.purchaseType ??
+                      (state.purchaseType === "SUBSCRIPTION"
+                        ? "Subscribers only. Tiers can start at 1 item, e.g. 10% off any subscription."
+                        : undefined)
+                    }
+                  />
+                  {state.purchaseType !== "ONE_TIME" && (
+                    <>
+                      <Segment
+                        name="recurringMode"
+                        label="Subscription orders that get the discount"
+                        value={cycleMode(state.recurringCycleLimit)}
+                        options={[
+                          ["FIRST", "First order only"],
+                          ["LIMITED", "A set number"],
+                          ["ALL", "Every order"],
+                        ]}
+                        disabled={readOnly}
+                        onChange={(m) => set("recurringCycleLimit", m === "FIRST" ? "1" : m === "ALL" ? "0" : "3")}
+                        hint={
+                          cycleMode(state.recurringCycleLimit) === "ALL"
+                            ? "The first order and every renewal are discounted."
+                            : cycleMode(state.recurringCycleLimit) === "FIRST"
+                              ? "Only the first order is discounted; renewals are charged full price."
+                              : undefined
+                        }
+                      />
+                      {cycleMode(state.recurringCycleLimit) === "LIMITED" && (
+                        <div className="bb-fieldnarrow">
+                          <NumberField
+                            label="Number of orders"
+                            suffix="orders"
+                            min={2}
+                            max={CAMPAIGN_LIMITS.maxRecurringCycles}
+                            step={1}
+                            value={state.recurringCycleLimit}
+                            details="Counts the first order. 3 = the first order and the next 2 renewals."
+                            error={errors.recurringCycleLimit}
+                            disabled={readOnly}
+                            onChange={(v) => set("recurringCycleLimit", v)}
+                          />
+                        </div>
+                      )}
+                    </>
+                  )}
+                </div>
+              ) : (
+                <div className="bb-subnote">
+                  <p className="bb-fieldhint">
+                    {state.products.length === 0
+                      ? "Choose products first. If they're sold on a subscription plan, you can set how subscribers get this discount here."
+                      : "These products have no subscription plan, so the discount applies to every purchase. Want to sell them as a subscription too?"}
+                  </p>
+                  {state.products.length > 0 &&
+                    (mode === "edit" && !dirty ? (
+                      <Link className="bb-btn bb-btn--glass" to={newPlanHref}>
+                        Add subscription plan
+                      </Link>
+                    ) : (
+                      <p className="bb-fieldhint">
+                        {mode === "create" ? "Save the campaign first, then add a subscription plan." : "Save your changes first, then add a subscription plan."}
+                      </p>
+                    ))}
+                </div>
+              )}
             </EditorCard>
 
             {mode === "create" && (

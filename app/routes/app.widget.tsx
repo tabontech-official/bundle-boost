@@ -534,7 +534,7 @@ export default function WidgetCustomization() {
               title="Purchase options"
               hint={
                 can("oneTimeLabel") ? (
-                  "One-time purchase or Subscribe & save, with a delivery frequency. Shown on products that have subscription plans (from an app such as Shopify Subscriptions)."
+                  "One-time purchase or Subscribe & save, with a delivery frequency. Shown on products in your BundleBoost subscription plans."
                 ) : (
                   <>Custom labels are on Growth.{upgrade("Growth")}</>
                 )
@@ -585,23 +585,18 @@ export default function WidgetCustomization() {
                       <span className="bb-fieldlabel">Delivery frequencies</span>
                       {sellingPlans.length === 0 ? (
                         <p className="bb-fieldhint bb-plansempty">
-                          Your store has no subscription plans yet. Create them in{" "}
-                          <a
-                            className="bb-link"
-                            href="https://apps.shopify.com/shopify-subscriptions"
-                            target="_blank"
-                            rel="noreferrer"
-                          >
-                            Shopify Subscriptions
-                          </a>{" "}
-                          (free), for example every month or every 3 months, and add products to them. They appear here
-                          and in the widget automatically.
+                          You have no subscription plans yet.{" "}
+                          <Link className="bb-link" to="/app/subscriptions/new">
+                            Create a plan
+                          </Link>{" "}
+                          with delivery frequencies (for example every month or every 3 months) and add products to it.
+                          They appear here and in the widget automatically.
                         </p>
                       ) : (
                         <>
                           <span className="bb-fieldhint bb-fieldhint--top">
                             {lockNote("planOverrides") ??
-                              "From your subscription plans. Rename any frequency (e.g. “Quarterly”) or hide it from the widget. Add new ones in your subscription app."}
+                              "From your subscription plans. Rename any frequency (e.g. “Quarterly”) or hide it from the widget. Add new ones in Subscriptions."}
                           </span>
                           <ul className="bb-freqlist">
                             {sellingPlans.map((p) => {

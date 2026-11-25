@@ -23,6 +23,7 @@ import {
 } from "../.server/services/campaign.service";
 import { getShopSettings } from "../.server/services/settings.service";
 import { getShopPlan } from "../.server/services/billing.service";
+import { productsWithSubscriptionPlans } from "../.server/services/subscription-plan.service";
 import { syncCampaignDiscount } from "../.server/services/discount-sync.service";
 import { syncStorefrontConfig } from "../.server/services/storefront-sync.service";
 import { CampaignForm } from "../components/CampaignForm";
@@ -34,10 +35,11 @@ import { on } from "../components/bool-attrs";
 export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   const { admin, shop } = await requireAdmin(request);
   try {
-    const [campaign, settings, { plan }] = await Promise.all([
+    const [campaign, settings, { plan }, planProductGids] = await Promise.all([
       getCampaign(shop.id, params.id ?? ""),
       getShopSettings(shop.id),
       getShopPlan(shop.id, admin),
+      productsWithSubscriptionPlans(shop.id),
     ]);
     return {
       campaign: toCampaignDto(campaign),
@@ -45,6 +47,7 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
       defaultLabel: settings.defaultDiscountLabel,
       maxTiers: plan.tiersPerCampaign,
       planName: plan.name,
+      planProductGids,
     };
   } catch (error) {
     if (error instanceof NotFoundError) throw data(null, { status: 404 });
@@ -139,7 +142,7 @@ const updated = (iso: string) =>
   );
 
 export default function CampaignDetailPage() {
-  const { campaign, currencyCode, defaultLabel, maxTiers, planName } = useLoaderData<typeof loader>();
+  const { campaign, currencyCode, defaultLabel, maxTiers, planName, planProductGids } = useLoaderData<typeof loader>();
   const statusFetcher = useFetcher<StatusResult>();
   const shopify = useAppBridge();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -189,6 +192,7 @@ export default function CampaignDetailPage() {
         defaultLabel={defaultLabel}
         maxTiers={maxTiers}
         planName={planName}
+        planProductGids={planProductGids}
         readOnly={campaign.status === "ARCHIVED"}
         head={
           <>

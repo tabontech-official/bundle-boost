@@ -6,17 +6,23 @@ import { readJsonBody } from "../.server/request";
 import { createDraftCampaign } from "../.server/services/campaign.service";
 import { getShopSettings } from "../.server/services/settings.service";
 import { getShopPlan } from "../.server/services/billing.service";
+import { productsWithSubscriptionPlans } from "../.server/services/subscription-plan.service";
 import { CampaignForm, EMPTY_CAMPAIGN } from "../components/CampaignForm";
 import { RouteError } from "../components/RouteError";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const { admin, shop } = await requireAdmin(request);
-  const [settings, { plan }] = await Promise.all([getShopSettings(shop.id), getShopPlan(shop.id, admin)]);
+  const [settings, { plan }, planProductGids] = await Promise.all([
+    getShopSettings(shop.id),
+    getShopPlan(shop.id, admin),
+    productsWithSubscriptionPlans(shop.id),
+  ]);
   return {
     currencyCode: shop.currencyCode,
     defaultLabel: settings.defaultDiscountLabel,
     maxTiers: plan.tiersPerCampaign,
     planName: plan.name,
+    planProductGids,
   };
 };
 
@@ -35,7 +41,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 };
 
 export default function NewCampaign() {
-  const { currencyCode, defaultLabel, maxTiers, planName } = useLoaderData<typeof loader>();
+  const { currencyCode, defaultLabel, maxTiers, planName, planProductGids } = useLoaderData<typeof loader>();
   return (
     <s-page heading="Create campaign" inlineSize="large">
       <s-link slot="breadcrumb-actions" href="/app/campaigns">
@@ -48,6 +54,7 @@ export default function NewCampaign() {
         defaultLabel={defaultLabel}
         maxTiers={maxTiers}
         planName={planName}
+        planProductGids={planProductGids}
         head={<span className="bb-state bb-state--draft">Saved as a draft</span>}
         statusCard={
           <section className="bb-glass bb-editcard">

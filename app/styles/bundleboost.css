@@ -2645,3 +2645,13 @@ html body {
   font-weight: 600;
   white-space: nowrap;
 }
+
+/* Campaign editor: Subscriptions card when the products have no plan */
+.bb-subnote {
+  display: grid;
+  justify-items: start;
+  gap: 12px;
+}
+.bb-subnote .bb-fieldhint {
+  margin: 0;
+}

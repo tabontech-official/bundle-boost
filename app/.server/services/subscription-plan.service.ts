@@ -37,6 +37,16 @@ export async function listSubscriptionPlans(shopId: string) {
   return prisma.subscriptionPlan.findMany({ where: { shopId }, orderBy: { createdAt: "asc" }, include });
 }
 
+/** Products offered on a subscription plan that's live in Shopify (for the campaign editor). */
+export async function productsWithSubscriptionPlans(shopId: string) {
+  const rows = await prisma.subscriptionPlanProduct.findMany({
+    where: { shopId, plan: { syncStatus: "SYNCED" } },
+    select: { productGid: true },
+    distinct: ["productGid"],
+  });
+  return rows.map((r) => r.productGid);
+}
+
 export async function getSubscriptionPlan(shopId: string, id: string) {
   const plan = await prisma.subscriptionPlan.findFirst({ where: { id, shopId }, include });
   if (!plan) throw new NotFoundError("Subscription plan");
