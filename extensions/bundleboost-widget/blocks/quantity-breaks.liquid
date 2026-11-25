@@ -63,6 +63,7 @@
     style="--bb-accent: {{ widget.accent_color | default: '#008060' | escape }}; --bb-text: {{ widget.text_color | default: '#202223' | escape }}; --bb-bg: {{ widget.background_color | default: '#FFFFFF' | escape }}; --bb-radius: {{ widget.border_radius | default: 8 }}px; --bb-heading-size: {{ widget.heading_size | default: 16 }}px; --bb-text-size: {{ widget.text_size | default: 14 }}px; --bb-tier-border: {{ widget.tier_border_color | default: '#DCDCE0' | escape }}; --bb-selected-bg: {{ widget.selected_background_color | default: '#FFFFFF' | escape }}; --bb-save: {{ widget.savings_color | default: widget.accent_color | default: '#008060' | escape }}; --bb-badge-bg: {{ widget.badge_color | default: widget.accent_color | default: '#008060' | escape }}; --bb-badge-fg: {{ widget.badge_text_color | default: '#FFFFFF' | escape }}; --bb-container-border: {{ widget.container_border_color | default: '#E3E3E8' | escape }};"
     data-bb-breaks
     data-same-currency="{{ same_currency }}"
+    data-variant-id="{{ current_variant.id }}"
     {{ block.shopify_attributes }}
   >
     <script type="application/json" data-bb-variant-prices>

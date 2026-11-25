@@ -158,3 +158,10 @@
   font-size: 0.85em;
   opacity: 0.75;
 }
+
+/* The theme's product price while a tier is chosen: "<s>$15.00</s> $13.50". */
+.bb-theme-price__was {
+  margin-inline-end: 0.35em;
+  opacity: 0.55;
+  font-weight: normal;
+}

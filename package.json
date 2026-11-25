@@ -4,10 +4,11 @@
   "scripts": {
     "build": "prisma generate && react-router build",
     "vercel-build": "prisma generate && node scripts/vercel-migrate.mjs && react-router build",
-    "dev": "shopify app dev",
+    "dev": "npm run build:widget && shopify app dev",
+    "build:widget": "node scripts/build-widget.mjs",
     "config:link": "shopify app config link",
     "generate": "shopify app generate",
-    "deploy": "shopify app deploy",
+    "deploy": "npm run build:widget && shopify app deploy",
     "config:use": "shopify app config use",
     "env": "shopify app env",
     "start": "react-router-serve ./build/server/index.js",
