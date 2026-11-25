@@ -12,6 +12,14 @@ export function RouteError() {
   if (isRouteErrorResponse(error) && !notFound) {
     return boundary.error(error);
   }
+
+  const errorMessage =
+    error instanceof Error
+      ? error.message
+      : typeof error === "object" && error && "message" in error
+        ? String((error as { message: unknown }).message)
+        : String(error ?? "");
+
   return (
     <s-page heading={notFound ? "Not found" : "Something went wrong"}>
       <s-section>
@@ -20,7 +28,8 @@ export function RouteError() {
             <s-paragraph>
               {notFound
                 ? "This item doesn't exist or was deleted."
-                : "We couldn't load this page. Refresh to try again. If the problem continues, contact support."}
+                : errorMessage ||
+                  "We couldn't load this page. Refresh to try again. If the problem continues, contact support."}
             </s-paragraph>
           </s-banner>
           <s-stack direction="inline" gap="base">

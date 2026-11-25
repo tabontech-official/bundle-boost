@@ -28,8 +28,13 @@ function createClient() {
       // no .env file
     }
   }
-  if (process.env.DATABASE_ADAPTER === "neon") {
-    const adapter = new PrismaNeon({ connectionString: process.env.DATABASE_URL });
+  const url = process.env.DATABASE_URL ?? "";
+  const isNeon =
+    process.env.DATABASE_ADAPTER === "neon" ||
+    (typeof url === "string" && url.includes("neon.tech"));
+
+  if (isNeon && url) {
+    const adapter = new PrismaNeon({ connectionString: url });
     return new PrismaClient({ adapter, transactionOptions: TRANSACTION_OPTIONS });
   }
   return new PrismaClient({ transactionOptions: TRANSACTION_OPTIONS });
