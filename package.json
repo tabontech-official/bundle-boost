@@ -2,7 +2,7 @@
   "name": "bundleboost",
   "private": true,
   "scripts": {
-    "build": "react-router build",
+    "build": "prisma generate && react-router build",
     "vercel-build": "prisma generate && node scripts/vercel-migrate.mjs && react-router build",
     "dev": "shopify app dev",
     "config:link": "shopify app config link",

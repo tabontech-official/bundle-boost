@@ -21,6 +21,11 @@ try {
   // no .env file
 }
 
+// Ensure DIRECT_URL is set if DATABASE_URL is available
+if (!process.env.DIRECT_URL && process.env.DATABASE_URL) {
+  process.env.DIRECT_URL = process.env.DATABASE_URL.replace("-pooler", "");
+}
+
 const migrationsDir = join(process.cwd(), "prisma", "migrations");
 
 function runMigrateDeploy() {
