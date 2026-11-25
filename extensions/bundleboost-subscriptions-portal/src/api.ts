@@ -46,11 +46,24 @@ export type Action =
 // generates (shopify.d.ts); give it the page's \`shopify\` global type here.
 declare const shopify: import("@shopify/ui-extensions/customer-account.page.render").Api;
 
-// Replaced by Shopify CLI when it bundles the extension.
-declare const process: { env: { APP_URL?: string } };
+// BundleBoost's backend. Shopify CLI replaces process.env.APP_URL with the
+// dev tunnel during `shopify app dev` only; a released version (shopify app
+// deploy) uses the production URL. Keep it in sync with application_url in
+// shopify.app.production.toml.
+declare const process: { env: { APP_URL?: string } } | undefined;
+const PRODUCTION_APP_URL = "https://bundle-boost-theta.vercel.app";
 
-/** Set by Shopify CLI at build time: the app's URL (the dev tunnel during `shopify app dev`). */
-const APP_URL = (process.env.APP_URL ?? "").replace(/\/$/, "");
+function appUrl() {
+  try {
+    // In dev this expression is replaced with the tunnel URL; in a released
+    // build `process` doesn't exist and it throws, so the catch applies.
+    return process!.env.APP_URL || PRODUCTION_APP_URL;
+  } catch {
+    return PRODUCTION_APP_URL;
+  }
+}
+
+const APP_URL = appUrl().replace(/\/$/, "");
 const ENDPOINT = `${APP_URL}/api/portal/subscriptions`;
 
 export class PortalError extends Error {}

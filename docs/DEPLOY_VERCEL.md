@@ -52,27 +52,24 @@ Never commit these values; `.env` stays local.
 ## 4. Point the Shopify app at Vercel
 
 `shopify app dev` rewrites the URLs in `shopify.app.toml` to its tunnel, so
-keep a separate production config:
+production has its own config: `shopify.app.production.toml` (same app, same
+scopes and webhooks). Before the first release:
 
-```
-shopify app config link        # choose this app, name the file e.g. "production"
-```
+1. Replace `YOUR-VERCEL-DOMAIN` (2 places) with the Vercel domain, e.g.
+   `bundleboost.vercel.app`:
 
-In the new `shopify.app.production.toml` set:
+   ```toml
+   application_url = "https://bundleboost.vercel.app"
 
-```toml
-application_url = "https://<your-vercel-domain>"
+   [auth]
+   redirect_urls = [ "https://bundleboost.vercel.app/auth/callback" ]
+   ```
 
-[auth]
-redirect_urls = [ "https://<your-vercel-domain>/auth/callback" ]
+2. When you change scopes or webhooks in `shopify.app.toml`, make the same
+   change here.
 
-[build]
-automatically_update_urls_on_dev = false
-```
-
-Copy `[access_scopes]`, `[webhooks]` and `[discount.metafields…]` from
-`shopify.app.toml`. Then release the configuration and extensions (the
-discount Function and the theme block):
+Then release the configuration and all extensions (discount Function, theme
+block, customer portal page and its order/profile links):
 
 ```
 shopify app deploy --config production
@@ -81,13 +78,28 @@ shopify app deploy --config production
 `shopify app deploy` creates a new app version that goes live for every
 store with the app installed, so run it only when you mean to release.
 
+The customer portal extensions get the backend URL from `application_url`
+at build time, so deploy only after the domain is set. Until this release,
+the "My subscriptions" item in a store's customer account menu shows
+"There's a problem loading this page" (only the dev preview exists).
+
+### Dev Dashboard (app → API access), for the released version
+
+- Customer account UI extensions: **network access** allowed.
+- **Protected customer data**: Name, Email and Address, with reasons
+  (subscriber list, renewals, customer portal delivery address). Public
+  distribution needs Shopify's review of these.
+
 ## 5. Deploy and check
 
 1. Deploy in Vercel (production).
 2. Open the app from the Shopify admin. It should load without the tunnel.
-3. Vercel → Project → Settings → **Cron Jobs**: `/jobs/renewals` hourly. Use
+3. As a customer, open the store's customer account → **My subscriptions**
+   (add it under Content → Menus → Customer account menu). The list loads
+   and actions work.
+4. Vercel → Project → Settings → **Cron Jobs**: `/jobs/renewals` hourly. Use
    **Run** to trigger it once; the function log shows "Renewal job finished".
-4. Settings → Webhooks are delivered to `https://<domain>/webhooks/...`
+5. Settings → Webhooks are delivered to `https://<domain>/webhooks/...`
    (relative URIs in the TOML resolve against `application_url`).
 
 ## Notes

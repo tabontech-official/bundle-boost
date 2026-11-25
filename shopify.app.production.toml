@@ -1,0 +1,68 @@
+# Production configuration (Vercel). Release with:
+#   shopify app deploy --config production
+# Keep scopes and webhooks in sync with shopify.app.toml (development).
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
+
+client_id = "4f89a504ab43c78ac4bd3017e4a315cc"
+application_url = "https://bundle-boost-theta.vercel.app"
+embedded = true
+name = "bundleboost"
+
+[access_scopes]
+# Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
+# read_products: resource picker + server-side product verification.
+# write_discounts: create/update the automatic app discounts that run the
+# BundleBoost Discount Function.
+# write_customers: email a customer Shopify's secure link to update the card
+# on their subscription (customer portal).
+# customer_read_customers + customer_*_own_subscription_contracts: the customer
+# portal reads (customer { subscriptionContracts }) and changes the
+# delivery address through the Customer Account API.
+scopes = "read_products,write_products,write_discounts,write_purchase_options,read_own_subscription_contracts,write_own_subscription_contracts,read_customer_payment_methods,read_customers,write_customers,read_orders,customer_read_customers,customer_read_own_subscription_contracts,customer_write_own_subscription_contracts"
+
+# Function configuration for each campaign's automatic discount. Written only
+# by the app; merchants can view but not edit it.
+[discount.metafields.app.function-configuration] 
+type = "json"
+name = "BundleBoost configuration"
+
+  [discount.metafields.app.function-configuration.access]
+  admin = "merchant_read"
+
+[webhooks]
+api_version = "2027-01"
+
+  [[webhooks.subscriptions]]
+  uri = "/webhooks/app/uninstalled"
+  topics = [ "app/uninstalled" ]
+
+  [[webhooks.subscriptions]]
+  uri = "/webhooks/app/scopes_update"
+  topics = [ "app/scopes_update" ]
+
+  [[webhooks.subscriptions]]
+  uri = "/webhooks/app_subscriptions/update"
+  topics = [ "app_subscriptions/update" ]
+
+  # Subscriptions: contracts created at checkout or changed, and the
+  # results of renewal charges BundleBoost starts.
+  # These topics carry protected customer data: they need the app's
+  # Protected customer data access (Dev Dashboard > app > API access).
+  [[webhooks.subscriptions]]
+  uri = "/webhooks/subscription_contracts"
+  topics = [ "subscription_contracts/create", "subscription_contracts/update" ]
+
+  [[webhooks.subscriptions]]
+  uri = "/webhooks/subscription_billing_attempts"
+  topics = [ "subscription_billing_attempts/success", "subscription_billing_attempts/failure", "subscription_billing_attempts/challenged" ]
+
+  # Mandatory compliance webhooks for App Store distribution.
+  [[webhooks.subscriptions]]
+  uri = "/webhooks/compliance"
+  compliance_topics = [ "customers/data_request", "customers/redact", "shop/redact" ]
+
+[auth]
+redirect_urls = [ "https://bundle-boost-theta.vercel.app/auth/callback" ]
+
+[build]
+automatically_update_urls_on_dev = false
