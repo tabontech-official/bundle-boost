@@ -1,6 +1,6 @@
 import { redirect, useLoaderData, type LoaderFunctionArgs, type MetaFunction } from "react-router";
 import { env } from "../../.server/env";
-import { PLAN_ORDER, PLANS } from "../../lib/plans";
+import { PLAN_FOOTNOTES, PLAN_ORDER, PLANS } from "../../lib/plans";
 import styles from "./styles.module.css";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
@@ -71,49 +71,70 @@ export default function Landing() {
   return (
     <div className={styles.page}>
       <header className={styles.top}>
-        <div className={styles.brand}>
+        <a className={styles.brand} href="/">
           <img src="/bundleboost-icon.svg" alt="" width={36} height={36} />
           <span>BundleBoost</span>
-        </div>
+        </a>
         <span className={styles.pill}>Shopify app</span>
       </header>
 
       <main>
         <section className={styles.hero}>
           <div className={styles.heroText}>
-            <h1>Sell more per order with quantity discounts and subscriptions</h1>
+            <span className={styles.kicker}>Quantity breaks · Volume discounts · Subscriptions</span>
+            <h1>
+              Sell more per order with <em>quantity breaks</em> and subscriptions
+            </h1>
             <p className={styles.lede}>
               BundleBoost rewards customers for buying more. Offer &ldquo;buy more, save more&rdquo; tiers on the
               products you choose, show the savings right on the product page, and let customers subscribe for
               repeat deliveries.
             </p>
             <p className={styles.howToOpen}>
-              Install BundleBoost from the Shopify App Store. Already installed? Open it from your Shopify admin
-              under <strong>Apps → BundleBoost</strong>.
+              <span className={styles.dot} aria-hidden="true" />
+              <span>
+                Install BundleBoost from the Shopify App Store. Already installed? Open it from your Shopify admin
+                under <strong>Apps → BundleBoost</strong>.
+              </span>
             </p>
           </div>
 
           <figure className={styles.example} aria-label="Example of the BundleBoost block on a product page">
-            <p className={styles.exampleHeading}>Buy more, save more</p>
+            <div className={styles.exampleHead}>
+              <p className={styles.exampleHeading}>Buy more, save more</p>
+              <span className={styles.exampleTag}>On your product page</span>
+            </div>
             <ul>
               {EXAMPLE_TIERS.map((t) => (
                 <li key={t.qty} className={t.best ? styles.tierBest : undefined}>
                   {t.best && <span className={styles.badge}>Best deal</span>}
                   <strong>Buy {t.qty}+</strong>
-                  <span>{t.each} each</span>
+                  <span className={styles.each}>{t.each} each</span>
                   <span className={styles.save}>{t.save}</span>
                 </li>
               ))}
             </ul>
+            <div className={styles.exampleTotal}>
+              <span>5 items at checkout</span>
+              <strong>
+                <s>$75.00</s>$60.00
+              </strong>
+            </div>
             <figcaption>Example: a $15 product with three tiers.</figcaption>
           </figure>
         </section>
 
         <section className={styles.section} aria-labelledby="what">
-          <h2 id="what">What BundleBoost does</h2>
+          <div className={styles.sectionHead}>
+            <span className={styles.kicker}>What it does</span>
+            <h2 id="what">
+              Customers buy more <em>when they save more</em>
+            </h2>
+          </div>
           <ul className={styles.features}>
-            {FEATURES.map((f) => (
+            {FEATURES.map((f, i) => (
               <li key={f.title}>
+                <span className={styles.featureNum}>{String(i + 1).padStart(2, "0")}</span>
                 <h3>{f.title}</h3>
                 <p>{f.body}</p>
               </li>
@@ -122,7 +143,12 @@ export default function Landing() {
         </section>
 
         <section className={styles.section} aria-labelledby="how">
-          <h2 id="how">How it works</h2>
+          <div className={styles.sectionHead}>
+            <span className={styles.kicker}>How it works</span>
+            <h2 id="how">
+              Live in <em>three steps</em>
+            </h2>
+          </div>
           <ol className={styles.steps}>
             {STEPS.map((s, i) => (
               <li key={s.title}>
@@ -135,13 +161,21 @@ export default function Landing() {
         </section>
 
         <section className={styles.section} aria-labelledby="plans">
-          <h2 id="plans">Plans</h2>
+          <div className={styles.sectionHead}>
+            <span className={styles.kicker}>Pricing</span>
+            <h2 id="plans">
+              Start free, <em>upgrade as you grow</em>
+            </h2>
+          </div>
           <ul className={styles.plans}>
             {PLAN_ORDER.map((handle) => {
               const plan = PLANS[handle];
               return (
-                <li key={handle}>
-                  <h3>{plan.name}</h3>
+                <li key={handle} className={handle === "growth" ? styles.planFeatured : undefined}>
+                  <div className={styles.planHead}>
+                    <h3>{plan.name}</h3>
+                    {handle === "growth" && <span className={styles.planBadge}>Recommended</span>}
+                  </div>
                   <p className={styles.price}>
                     {plan.price === 0 ? "Free" : `$${plan.price.toFixed(2)}`}
                     {plan.price > 0 && <span> / month</span>}
@@ -157,6 +191,11 @@ export default function Landing() {
             })}
           </ul>
           <p className={styles.note}>Prices in USD, billed through Shopify.</p>
+          {PLAN_FOOTNOTES.map((note) => (
+            <p key={note} className={styles.note}>
+              {note}
+            </p>
+          ))}
         </section>
       </main>
 
