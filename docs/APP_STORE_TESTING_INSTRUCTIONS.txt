@@ -1,0 +1,31 @@
+BundleBoost adds quantity breaks and recurring delivery plans to a store, plus a page where customers manage their subscriptions. No separate account is needed.
+
+Before testing
+1. Install the app and open it from Apps in the Shopify admin.
+2. In Settings, open Payments and turn on test mode or the Bogus Gateway.
+3. In Settings, open Customer accounts and use the new customer accounts.
+
+Quantity breaks
+1. In the app, go to Campaigns and click Create campaign. Enter a name, pick any product and keep the sample tiers. Click Save draft, then Activate. The status changes to Live.
+2. Go to Online Store, then Themes, then Customize. Open a product page, click Add block, open Apps and add Quantity breaks. Save.
+3. Open that product in the store. The block lists each tier with the price per item and the saving. Clicking a tier updates the quantity and the product price.
+4. Add the product to the cart and go to checkout. The discount is applied on its own, without a code.
+5. The Widget page changes the block's text, layout and colours.
+
+Subscriptions
+1. In the app, go to Subscriptions and click Create plan. Enter a name, add a delivery frequency such as every month with a 10 percent discount, and add the same product. Save. The status shows Live on Shopify.
+2. The product page now shows One-time purchase and Subscribe & save with a delivery frequency. Choose Subscribe & save and check out with a test card. With the Bogus Gateway, use card number 1.
+3. The Subscribers page in the app lists the new subscription and its next renewal. Renewals are charged automatically when due.
+
+Customer subscription page
+1. This step is required. In the admin, go to Content, then Menus, and open the Customer account menu. Click Add menu item, choose Apps, select My subscriptions and save.
+2. In the store, click the account icon and sign in with the email used for the subscription order.
+3. Open My subscriptions from the account menu. It shows the status, next order, price, delivery frequency, payment method, delivery address and order history.
+4. Test Skip next order and Undo, Pause, Resume, Cancel, Change address and Update payment method. Shopify emails a secure link for the payment method. If the plan has two or more frequencies, the delivery frequency can be changed too. Every change also shows on the Subscribers page.
+5. Optional: in Settings, open Checkout and click Customize to open the customer accounts editor. Add the BundleBoost block to the Order status page and the Profile page, then save. They link to My subscriptions.
+
+Billing
+On the Billing page, choose Growth or Pro and approve the plan. Development stores get a test charge. Choose Free to go back.
+
+Other notes
+Whether discounts combine with other discounts is set on the Settings page.

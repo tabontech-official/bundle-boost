@@ -1,0 +1,39 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="https://cdn.shopify.com/static/fonts/inter/v4/styles.css"><link rel="stylesheet" href="base.css">
+<style>
+.store { display:grid; grid-template-columns: 1fr 1fr; height:100%; }
+.photo { background: linear-gradient(160deg,#f6e9e2,#ead7cd); display:grid; place-items:center; }
+.stack { display:grid; gap:16px; }
+.fold { width:340px; height:96px; border-radius:22px; position:relative; box-shadow:0 22px 40px -26px rgba(43,27,74,.7); }
+.fold::before { content:""; position:absolute; left:28px; right:28px; top:20px; height:12px; border-radius:6px; background:rgba(255,255,255,.35); }
+.fold::after { content:""; position:absolute; left:28px; right:28px; top:42px; height:7px; border-radius:4px; background:rgba(255,255,255,.22); }
+.f1 { background:linear-gradient(180deg,#9a7fb0,#7a62a0); }
+.f2 { background:linear-gradient(180deg,#ff9a72,#e2533f); margin-left:24px; }
+.f3 { background:linear-gradient(180deg,#5d4c80,#3e3060); margin-left:-14px; }
+.info { padding:40px 48px; display:grid; align-content:start; gap:16px; }
+.title { font-size:34px; font-weight:600; letter-spacing:-.02em; }
+.price { font-size:24px; } .price s { color:#a99fb5; margin-right:10px; } .price b { color:var(--coral); font-weight:600; }
+.block { border:1px solid var(--line); border-radius:16px; padding:20px; display:grid; gap:12px; }
+.block h3 { font-size:19px; font-weight:600; }
+.tier { position:relative; display:grid; grid-template-columns:96px 1fr auto; align-items:center; padding:15px 18px; border:2px solid var(--line); border-radius:12px; font-size:18px; }
+.tier b { font-weight:600; }
+.tier.on { border-color:var(--coral); background:#fff8f5; }
+.tier .badge { position:absolute; top:-12px; right:14px; }
+.row { display:grid; grid-template-columns:150px 1fr; gap:12px; }
+.qty { height:52px; border:1.5px solid var(--line); border-radius:12px; display:flex; align-items:center; justify-content:space-around; font-size:19px; }
+</style></head><body>
+<div class="head"><img src="icon.svg" alt=""><h1>Show every tier and the <em>savings on your product page</em></h1></div>
+<div class="window"><div class="store">
+  <div class="photo"><div class="stack"><div class="fold f1"></div><div class="fold f2"></div><div class="fold f3"></div></div></div>
+  <div class="info">
+    <div class="title">Merino Crew Socks</div>
+    <div class="price"><s>$24.00</s><b>$20.40</b></div>
+    <div class="block">
+      <h3>Buy more, save more</h3>
+      <div class="tier"><b>Buy 2+</b><span class="muted">$22.80 each</span><span class="save">Save 5%</span></div>
+      <div class="tier on"><span class="badge">Most popular</span><b>Buy 3+</b><span class="muted">$20.40 each</span><span class="save">Save 15%</span></div>
+      <div class="tier"><b>Buy 5+</b><span class="muted">$19.20 each</span><span class="save">Save 20%</span></div>
+    </div>
+    <div class="row"><div class="qty"><span>−</span><b>3</b><span>+</span></div><div class="btn btn-dark" style="height:52px">Add to cart</div></div>
+  </div>
+</div></div>
+</body></html>

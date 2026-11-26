@@ -1,0 +1,92 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="https://cdn.shopify.com/static/fonts/inter/v4/styles.css">
+<style>
+  /* Logo palette: coral #FF8A5B → #E2433A, cream #FFD9C9, navy #2B1B4A. */
+  :root {
+    --coral: #e2433a;
+    --coral-2: #ff8a5b;
+    --cream: #ffd9c9;
+    --navy: #2b1b4a;
+    --navy-2: #6b5f80;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1600px; height: 900px; overflow: hidden; }
+  body {
+    font-family: "Inter", -apple-system, sans-serif;
+    color: var(--navy);
+    background:
+      radial-gradient(900px 700px at 0% 0%, #ffe3d6 0%, transparent 70%),
+      radial-gradient(800px 640px at 100% 0%, #ffd2c2 0%, transparent 70%),
+      radial-gradient(900px 700px at 60% 100%, #fff1ea 0%, transparent 70%),
+      #fff7f3;
+    display: grid;
+    grid-template-columns: 1fr 640px;
+    align-items: center;
+    gap: 80px;
+    padding: 0 120px;
+  }
+  .brand { display: flex; align-items: center; gap: 18px; margin-bottom: 44px; }
+  .brand img { width: 76px; height: 76px; border-radius: 20px; box-shadow: 0 14px 30px -12px rgba(226,67,58,.65); }
+  .brand span { font-size: 34px; font-weight: 600; letter-spacing: -0.01em; }
+  h1 { font-size: 68px; text-wrap: balance; line-height: 1.06; font-weight: 550; letter-spacing: -0.03em; }
+  h1 em {
+    font-style: normal;
+    background: linear-gradient(135deg, var(--coral-2), var(--coral));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .sub { margin-top: 28px; font-size: 26px; line-height: 1.45; color: var(--navy-2); max-width: 620px; }
+
+  .card {
+    background: rgba(255,255,255,.86);
+    border: 1px solid #fff;
+    border-radius: 28px;
+    padding: 36px;
+    box-shadow: 0 2px 2px rgba(43,27,74,.04), 0 40px 80px -36px rgba(226,67,58,.45);
+  }
+  .product { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 24px; }
+  .product b { font-size: 26px; font-weight: 600; }
+  .price { font-size: 26px; font-weight: 600; color: var(--coral); }
+  .price s { color: #a99fb5; font-weight: 400; margin-right: 10px; }
+  .tiers { display: grid; gap: 14px; }
+  .tier {
+    position: relative; display: grid; grid-template-columns: 120px 1fr auto; align-items: center;
+    padding: 20px 22px; border: 2px solid #f1e4de; border-radius: 16px; background: #fff;
+    font-size: 22px;
+  }
+  .tier b { font-weight: 600; }
+  .tier .each { color: var(--navy-2); }
+  .tier .save { font-style: normal; color: var(--coral); font-weight: 600; }
+  .tier.on { border-color: var(--coral); background: #fff8f5; box-shadow: 0 18px 30px -20px rgba(226,67,58,.7); }
+  .tier .badge {
+    position: absolute; top: -15px; right: 18px;
+    background: linear-gradient(135deg, var(--coral-2), var(--coral));
+    color: #ffffff; font-size: 15px; font-weight: 700; letter-spacing: .02em;
+    padding: 4px 14px; border-radius: 999px;
+    box-shadow: 0 6px 14px -6px rgba(226,67,58,.8);
+  }
+  .plan {
+    margin-top: 22px; display: flex; justify-content: space-between; align-items: center;
+    padding: 18px 22px; border-radius: 16px; background: #fff1ea; border: 1.5px solid var(--cream);
+    font-size: 21px;
+  }
+  .plan b { font-weight: 600; }
+  .plan .note { color: var(--coral); font-weight: 600; }
+  .dot { display: inline-block; width: 12px; height: 12px; border-radius: 50%; background: var(--coral); margin-right: 12px; box-shadow: 0 0 0 5px rgba(226,67,58,.15); }
+</style></head>
+<body>
+  <div>
+    <div class="brand"><img src="icon.svg" alt=""><span>BundleBoost</span></div>
+    <h1>Customers buy <em>more per order</em> and come back.</h1>
+    <p class="sub">Quantity breaks on your product page, applied at checkout. Recurring delivery plans that renew on their own.</p>
+  </div>
+  <div class="card">
+    <div class="product"><b>Merino Crew Socks</b><span class="price"><s>$24.00</s>$20.40</span></div>
+    <div class="tiers">
+      <div class="tier"><b>Buy 2+</b><span class="each">$22.80 each</span><span class="save">Save 5%</span></div>
+      <div class="tier on"><span class="badge">Most popular</span><b>Buy 3+</b><span class="each">$20.40 each</span><span class="save">Save 15%</span></div>
+      <div class="tier"><b>Buy 5+</b><span class="each">$19.20 each</span><span class="save">Save 20%</span></div>
+    </div>
+    <div class="plan"><b><span class="dot"></span>Deliver every month</b><span class="note">Skip or pause anytime</span></div>
+  </div>
+</body></html>

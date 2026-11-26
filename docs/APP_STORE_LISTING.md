@@ -83,12 +83,21 @@ Match your brand: text, layout and colours, with a live preview
 
 ## 8. Categories and tags
 
-- **Primary category:** the discounts / pricing category (e.g. *Selling
-  products → Pricing → Discounts*; pick the closest the form offers).
-- **Secondary category:** subscriptions (*Selling products → Purchase options
-  → Subscriptions*, or closest).
-- **Tags:** pick the ones the form offers for volume discounts, tiered
-  pricing, upsell, subscriptions.
+From Shopify's category list (shopify.dev → App listing categories):
+
+- **Primary:** Marketing and conversion → Promotions → **Discounts**
+  ("Apps that let merchants offer discounts or special sales for products").
+  Quantity breaks are discounts applied at checkout, so this is the main
+  purpose.
+- **Secondary:** Selling products → Payments → **Subscriptions**
+  ("ongoing, automatic purchases of products"). Subscriptions are a full
+  feature (plans, renewals, customer portal), not a small extra, so a
+  secondary category is justified.
+- **Structured features:** in each category, tick every feature the app
+  really has (up to 25). These can be changed later without an appeal.
+
+Alternatives if review disagrees: *Selling products → Pricing → Pricing
+optimization*, or *Marketing and conversion → Upsell and bundles*.
 
 ## 9. Pricing (must match the app's plans exactly)
 
