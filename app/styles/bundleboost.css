@@ -311,7 +311,8 @@ html body {
 }
 .bb-tiers {
   display: grid;
-  gap: 7px;
+  /* Room for the badge on a tier's top border. */
+  gap: 12px;
 }
 .bb-tier {
   position: relative;
@@ -355,16 +356,22 @@ html body {
   font-size: 11px;
   color: var(--bb-ink-3);
 }
+/* Sits on the tier's top border, like the storefront block. */
 .bb-tier__badge {
-  display: inline-block;
-  margin-inline-start: 8px;
-  padding: 1px 7px;
-  vertical-align: 1px;
+  position: absolute;
+  top: 0;
+  inset-inline-end: 12px;
+  transform: translateY(-50%);
+  padding: 2px 9px;
   border-radius: 999px;
-  background: var(--bb-brand);
+  background: linear-gradient(135deg, #f0603f, #d63a31);
+  box-shadow: 0 4px 10px -4px rgba(226, 67, 58, 0.7);
   color: #fff;
   font-size: 10px;
-  font-weight: 600;
+  font-weight: 650;
+  line-height: 1.4;
+  letter-spacing: 0.02em;
+  pointer-events: none;
 }
 .bb-pdp__savings {
   display: flex;

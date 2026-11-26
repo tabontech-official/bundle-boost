@@ -93,9 +93,9 @@ export function QuantityPreview({
             aria-pressed={i === selected}
             onClick={() => setPicked(i)}
           >
+            {i === best && tiers.length > 2 && <span className="bb-tier__badge">Best deal</span>}
             <span>
               {t.minQuantity === 1 ? `1 ${units[0]}` : `${t.minQuantity} ${units[1]}`}
-              {i === best && tiers.length > 2 && <span className="bb-tier__badge">Best deal</span>}
               {t.label && <small>{t.label}</small>}
             </span>
             <span className={Number(t.value) > 0 ? "bb-mono bb-save" : "bb-mono"}>{offLabel(t)}</span>
