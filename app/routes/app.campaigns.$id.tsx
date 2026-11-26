@@ -119,11 +119,11 @@ const STATUS_MESSAGES: Record<CampaignStatusValue, string> = {
   ARCHIVED: "Campaign archived",
 };
 
-const TRANSITIONS: Record<CampaignStatusValue, { label: string; hint: string }> = {
-  ACTIVE: { label: "Activate", hint: "Starts applying the discount at checkout." },
-  PAUSED: { label: "Pause", hint: "Stops the discount; you can resume any time." },
-  ARCHIVED: { label: "Archive", hint: "Removes it from checkout and your active list." },
-  DRAFT: { label: "Restore as draft", hint: "Brings it back for editing." },
+const TRANSITIONS: Record<CampaignStatusValue, { label: string; busyLabel: string; hint: string }> = {
+  ACTIVE: { label: "Activate", busyLabel: "Activating…", hint: "Starts applying the discount at checkout." },
+  PAUSED: { label: "Pause", busyLabel: "Pausing…", hint: "Stops the discount; you can resume any time." },
+  ARCHIVED: { label: "Archive", busyLabel: "Archiving…", hint: "Removes it from checkout and your active list." },
+  DRAFT: { label: "Restore as draft", busyLabel: "Restoring…", hint: "Brings it back for editing." },
 };
 
 const STATUS_NOTES: Record<string, string> = {
@@ -147,6 +147,8 @@ export default function CampaignDetailPage() {
   const shopify = useAppBridge();
   const [searchParams, setSearchParams] = useSearchParams();
   const busy = statusFetcher.state !== "idle";
+  // What's being submitted, so only that button shows the loader.
+  const pending = busy ? (statusFetcher.json as { intent?: string; status?: string } | undefined) : undefined;
 
   useEffect(() => {
     if (searchParams.get("created")) {
@@ -158,6 +160,9 @@ export default function CampaignDetailPage() {
   useEffect(() => {
     const result = statusFetcher.data;
     if (statusFetcher.state !== "idle" || !result) return;
+    // The delete dialog stays open (with its loader) until the result is in.
+    (document.getElementById("delete-campaign-modal") as (HTMLElement & { hideOverlay?: () => void }) | null)
+      ?.hideOverlay?.();
     shopify.toast.show(result.message, { isError: !result.ok });
   }, [statusFetcher.state, statusFetcher.data, shopify]);
 
@@ -205,7 +210,11 @@ export default function CampaignDetailPage() {
             <s-banner tone="critical" heading="Shopify checkout isn’t up to date">
               {campaign.syncError ?? "Shopify couldn’t be updated."} Your changes are saved in BundleBoost; checkout
               still reflects the last successful sync.
-              <s-button slot="secondary-actions" {...on({ disabled: busy })} onClick={() => submitIntent({ intent: "sync" })}>
+              <s-button
+                slot="secondary-actions"
+                {...on({ disabled: busy, loading: pending?.intent === "sync" })}
+                onClick={() => submitIntent({ intent: "sync" })}
+              >
                 Retry sync
               </s-button>
             </s-banner>
@@ -221,18 +230,23 @@ export default function CampaignDetailPage() {
             </div>
             <p className="bb-statusnote">{STATUS_NOTES[state.key]}</p>
             <div className="bb-statusactions">
-              {transitions.map((to, i) => (
-                <button
-                  key={to}
-                  type="button"
-                  className={i === 0 ? "bb-btn bb-btn--dark" : "bb-btn bb-btn--glass"}
-                  title={TRANSITIONS[to].hint}
-                  disabled={busy}
-                  onClick={() => submitIntent({ intent: "status", status: to })}
-                >
-                  {TRANSITIONS[to].label}
-                </button>
-              ))}
+              {transitions.map((to, i) => {
+                const working = pending?.intent === "status" && pending.status === to;
+                return (
+                  <button
+                    key={to}
+                    type="button"
+                    className={i === 0 ? "bb-btn bb-btn--dark" : "bb-btn bb-btn--glass"}
+                    title={TRANSITIONS[to].hint}
+                    disabled={busy}
+                    aria-busy={working || undefined}
+                    onClick={() => submitIntent({ intent: "status", status: to })}
+                  >
+                    {working && <span className="bb-spinner" aria-hidden="true" />}
+                    {working ? TRANSITIONS[to].busyLabel : TRANSITIONS[to].label}
+                  </button>
+                );
+              })}
             </div>
           </section>
         }
@@ -255,13 +269,17 @@ export default function CampaignDetailPage() {
           slot="primary-action"
           variant="primary"
           tone="critical"
-          commandFor="delete-campaign-modal"
-          command="--hide"
+          {...on({ loading: pending?.intent === "delete", disabled: busy })}
           onClick={() => submitIntent({ intent: "delete" })}
         >
           Delete campaign
         </s-button>
-        <s-button slot="secondary-actions" commandFor="delete-campaign-modal" command="--hide">
+        <s-button
+          slot="secondary-actions"
+          commandFor="delete-campaign-modal"
+          command="--hide"
+          {...on({ disabled: pending?.intent === "delete" })}
+        >
           Cancel
         </s-button>
       </s-modal>

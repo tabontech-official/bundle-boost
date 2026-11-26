@@ -1,7 +1,11 @@
+# Development config, used by `shopify app dev` (it points the app at its
+# tunnel while dev runs). Release with `npm run deploy`, which uses
+# shopify.app.production.toml. The URLs below are production's too, so an
+# accidental plain `shopify app deploy` still points the app at Vercel.
 # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
 client_id = "4f89a504ab43c78ac4bd3017e4a315cc"
-application_url = "https://example.com"
+application_url = "https://bundle-boost-theta.vercel.app"
 embedded = true
 name = "bundleboost"
 
@@ -59,8 +63,7 @@ api_version = "2027-01"
   compliance_topics = [ "customers/data_request", "customers/redact", "shop/redact" ]
 
 [auth]
-redirect_urls = [ "https://example.com/api/auth" ]
+redirect_urls = [ "https://bundle-boost-theta.vercel.app/auth/callback" ]
 
 [build]
-include_config_on_deploy = true
 automatically_update_urls_on_dev = true

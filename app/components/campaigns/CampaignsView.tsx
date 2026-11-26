@@ -64,6 +64,8 @@ export function CampaignsView({
   const [query, setQuery] = useState("");
   const [doomed, setDoomed] = useState<CampaignRow | null>(null);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  // The bulk status change in progress, so only that button shows the loader.
+  const [bulkStatus, setBulkStatus] = useState<CampaignStatusValue | null>(null);
   const headerCheckboxRef = useRef<HTMLInputElement>(null);
   const prevBulkBusy = useRef(isBulkBusy);
   const searchRef = useFieldEvents<HTMLElementTagNameMap["s-search-field"]>((el) => setQuery(readValue(el)));
@@ -184,8 +186,11 @@ export function CampaignsView({
                   {canActivate && (
                     <s-button
                       variant="secondary"
-                      {...on({ disabled: isBulkBusy })}
-                      onClick={() => onBulkStatus(selectedIds, "ACTIVE")}
+                      {...on({ disabled: isBulkBusy, loading: isBulkBusy && bulkStatus === "ACTIVE" })}
+                      onClick={() => {
+                        setBulkStatus("ACTIVE");
+                        onBulkStatus(selectedIds, "ACTIVE");
+                      }}
                     >
                       Activate
                     </s-button>
@@ -193,8 +198,11 @@ export function CampaignsView({
                   {canPause && (
                     <s-button
                       variant="secondary"
-                      {...on({ disabled: isBulkBusy })}
-                      onClick={() => onBulkStatus(selectedIds, "PAUSED")}
+                      {...on({ disabled: isBulkBusy, loading: isBulkBusy && bulkStatus === "PAUSED" })}
+                      onClick={() => {
+                        setBulkStatus("PAUSED");
+                        onBulkStatus(selectedIds, "PAUSED");
+                      }}
                     >
                       Pause
                     </s-button>
@@ -202,8 +210,11 @@ export function CampaignsView({
                   {canArchive && (
                     <s-button
                       variant="secondary"
-                      {...on({ disabled: isBulkBusy })}
-                      onClick={() => onBulkStatus(selectedIds, "ARCHIVED")}
+                      {...on({ disabled: isBulkBusy, loading: isBulkBusy && bulkStatus === "ARCHIVED" })}
+                      onClick={() => {
+                        setBulkStatus("ARCHIVED");
+                        onBulkStatus(selectedIds, "ARCHIVED");
+                      }}
                     >
                       Archive
                     </s-button>
