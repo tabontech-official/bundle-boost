@@ -6,6 +6,12 @@ export default function App() {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
+        {/* BundleBoost icon in browser tabs and search results (Google uses 48 px or larger). */}
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" href="/bundleboost-icon.svg" type="image/svg+xml" />
+        <link rel="icon" href="/favicon-48.png" type="image/png" sizes="48x48" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <link rel="manifest" href="/site.webmanifest" />
         <link rel="preconnect" href="https://cdn.shopify.com/" />
         <link
           rel="stylesheet"
