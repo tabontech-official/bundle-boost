@@ -7,6 +7,7 @@ import { RouteError } from "../components/RouteError";
 import { PLANS, type PlanHandle } from "../lib/plans";
 import { PLAN_GROWTH, PLAN_PRO, type BillingPlanName } from "../shopify.server";
 import { env } from "../.server/env";
+import { usesTestCharges } from "../.server/shopify/shop-info";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const { admin, shop } = await requireAdmin(request);
@@ -44,7 +45,8 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     return { ok: false, error: "Invalid plan" };
   }
 
-  const isTest = process.env.NODE_ENV !== "production";
+  // Development stores only accept test charges; real stores get real ones.
+  const isTest = await usesTestCharges(admin);
   const planName: BillingPlanName = targetPlan.handle === "pro" ? PLAN_PRO : PLAN_GROWTH;
   const cleanShopName = session.shop.replace(/\.myshopify\.com$/, "");
   const apiKey = env().SHOPIFY_API_KEY;

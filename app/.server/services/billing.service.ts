@@ -3,6 +3,7 @@ import { planFromHandle, PLAN_ORDER, PLANS, type Plan, type PlanHandle } from ".
 import { env } from "../env";
 import { logger } from "../logger";
 import type { AdminGraphqlClient } from "../shopify/graphql";
+import { usesTestCharges } from "../shopify/shop-info";
 import {
   fetchActiveSubscription as fetchAdminSubscription,
   cancelSubscription as cancelAdminSubscription,
@@ -188,7 +189,7 @@ export async function cancelCurrentSubscription(
       try {
         await billing.cancel({
           subscriptionId,
-          isTest: process.env.NODE_ENV !== "production",
+          isTest: await usesTestCharges(admin),
           prorate: true,
         });
         cancelled = true;
