@@ -1,4 +1,5 @@
-import { redirect, type LoaderFunctionArgs, type MetaFunction } from "react-router";
+import { redirect, useLoaderData, type LoaderFunctionArgs, type MetaFunction } from "react-router";
+import { env } from "../../.server/env";
 import { PLAN_ORDER, PLANS } from "../../lib/plans";
 import styles from "./styles.module.css";
 
@@ -9,7 +10,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     throw redirect(`/app?${url.searchParams.toString()}`);
   }
 
-  return null;
+  return { supportEmail: env().SUPPORT_EMAIL ?? null };
 };
 
 export const meta: MetaFunction = () => [
@@ -66,6 +67,7 @@ const EXAMPLE_TIERS = [
  * from Shopify only, so there's no shop-domain login form here.
  */
 export default function Landing() {
+  const { supportEmail } = useLoaderData<typeof loader>();
   return (
     <div className={styles.page}>
       <header className={styles.top}>
@@ -162,6 +164,15 @@ export default function Landing() {
         <p>
           BundleBoost works inside your Shopify admin. Discounts run in Shopify checkout, and card details stay with
           Shopify.
+        </p>
+        <p className={styles.footerLinks}>
+          <a href="/privacy">Privacy policy</a>
+          {supportEmail && (
+            <>
+              {" · "}
+              <a href={`mailto:${supportEmail}`}>Support: {supportEmail}</a>
+            </>
+          )}
         </p>
       </footer>
     </div>

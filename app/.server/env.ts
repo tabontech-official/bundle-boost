@@ -36,6 +36,8 @@ const serverEnvSchema = z.object({
   SHOPIFY_PARTNER_ORG_ID: z.string().regex(/^\d+$/, "must be the numeric Partner organization ID").optional(),
   SHOPIFY_PARTNER_API_ACCESS_TOKEN: z.string().min(1).optional(),
   SHOPIFY_APP_GID: z.string().regex(/^gid:\/\/shopify\/App\/\d+$/, "must look like gid://shopify/App/123").optional(),
+  // Public support address, shown on the landing page and privacy policy.
+  SUPPORT_EMAIL: z.email("must be an email address").optional(),
 });
 
 export type ServerEnv = z.infer<typeof serverEnvSchema>;
