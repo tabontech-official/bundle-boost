@@ -70,8 +70,8 @@ export function QuantityPreview({
       <div className="bb-pdp__head">
         <span className="bb-pdp__thumb" aria-hidden="true">
           <svg width="26" height="26" viewBox="0 0 26 26">
-            <path d="M8 3h7v9l3.5 6.5a4 4 0 0 1-3.5 6H7.5A3.5 3.5 0 0 1 4 21v-1a3 3 0 0 1 3-3h1z" fill="#b9aef0" />
-            <path d="M8 3h7v3H8z" fill="#5b47e0" />
+            <path d="M8 3h7v9l3.5 6.5a4 4 0 0 1-3.5 6H7.5A3.5 3.5 0 0 1 4 21v-1a3 3 0 0 1 3-3h1z" fill="#ffa98a" />
+            <path d="M8 3h7v3H8z" fill="#e2433a" />
           </svg>
         </span>
         <span>

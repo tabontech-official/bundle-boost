@@ -108,18 +108,18 @@ export function AnalyticsView({ data }: { data: AnalyticsViewData }) {
                     label={`${data.liveProducts} of ${data.storeProducts} products have a live discount`}
                     center={{ value: data.liveProducts, caption: `of ${number.format(data.storeProducts)} products` }}
                     segments={[
-                      { key: "live", label: "Live discount", value: data.liveProducts, color: "#5b47e0" },
+                      { key: "live", label: "Live discount", value: data.liveProducts, color: "#e2433a" },
                       {
                         key: "pending",
                         label: "In drafts or paused",
                         value: Math.max(data.targetedProducts - data.liveProducts, 0),
-                        color: "#b9aef0",
+                        color: "#ffa98a",
                       },
                       {
                         key: "none",
                         label: "No campaign",
                         value: Math.max(data.storeProducts - data.targetedProducts, 0),
-                        color: "#dcd8ec",
+                        color: "#efe1dc",
                       },
                     ]}
                   />
@@ -133,10 +133,10 @@ export function AnalyticsView({ data }: { data: AnalyticsViewData }) {
                   label={`${data.totalCampaigns} campaigns by status`}
                   center={{ value: data.totalCampaigns, caption: data.totalCampaigns === 1 ? "campaign" : "campaigns" }}
                   segments={[
-                    { key: "active", label: "Active", value: data.counts.ACTIVE, color: "#5b47e0" },
+                    { key: "active", label: "Active", value: data.counts.ACTIVE, color: "#e2433a" },
                     { key: "paused", label: "Paused", value: data.counts.PAUSED, color: "#eda100" },
-                    { key: "draft", label: "Draft", value: data.counts.DRAFT, color: "#b8b4c6" },
-                    { key: "archived", label: "Archived", value: data.counts.ARCHIVED, color: "#e4e1ee" },
+                    { key: "draft", label: "Draft", value: data.counts.DRAFT, color: "#c9bcc4" },
+                    { key: "archived", label: "Archived", value: data.counts.ARCHIVED, color: "#f1e7e3" },
                   ]}
                 />
               </div>

@@ -1,35 +1,36 @@
-/* BundleBoost: the app's own look, layered on Polaris.
-   Soft pastel light, small frosted-glass cards, Polaris' Inter everywhere, and
-   content in a narrow centred column so nothing feels oversized. */
+/* BundleBoost: the app's own look, layered on Polaris, in the logo's colours
+   (coral #FF8A5B → #E2433A, cream #FFD9C9, navy #2B1B4A). Warm peach light,
+   small frosted-glass cards, Polaris' Inter everywhere, and content in a
+   narrow centred column so nothing feels oversized. */
 
 :root {
-  --bb-ink: #1d1b26;
-  --bb-ink-2: #5d5a6b;
-  --bb-ink-3: #8f8c9c;
-  --bb-line: rgba(30, 20, 60, 0.08);
-  --bb-brand: #5b47e0;
+  --bb-ink: #2b1b4a;
+  --bb-ink-2: #6b5f80;
+  --bb-ink-3: #8e829e;
+  --bb-line: rgba(43, 27, 74, 0.08);
+  --bb-brand: #c93a30; /* logo coral, deepened so small text and links stay readable */
   --bb-save: #c2551c;
   --bb-success: #1f8a4c;
-  --bb-dark: #18161f;
+  --bb-dark: #2b1b4a;
   --bb-font: "Inter", -apple-system, BlinkMacSystemFont, "San Francisco", "Segoe UI", Roboto, "Helvetica Neue",
     sans-serif;
   --bb-glass: rgba(255, 255, 255, 0.55);
   --bb-glass-strong: rgba(255, 255, 255, 0.72);
   --bb-glass-edge: rgba(255, 255, 255, 0.8);
-  --bb-shadow: 0 1px 1px rgba(30, 20, 60, 0.03), 0 12px 32px -18px rgba(30, 20, 60, 0.2);
-  --bb-lift: 0 1px 1px rgba(30, 20, 60, 0.03), 0 22px 44px -20px rgba(30, 20, 60, 0.3);
+  --bb-shadow: 0 1px 1px rgba(43, 27, 74, 0.03), 0 12px 32px -18px rgba(43, 27, 74, 0.2);
+  --bb-lift: 0 1px 1px rgba(43, 27, 74, 0.03), 0 22px 44px -20px rgba(43, 27, 74, 0.3);
   --bb-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
-/* Pastel light behind every app page: lavender, sky, peach. */
+/* Warm peach light behind every app page. */
 html body {
   font-family: var(--bb-font);
   background:
-    radial-gradient(44rem 34rem at 0% 0%, #dccfff 0%, transparent 70%),
-    radial-gradient(40rem 30rem at 100% 4%, #cfe9fb 0%, transparent 70%),
+    radial-gradient(44rem 34rem at 0% 0%, #ffe3d6 0%, transparent 70%),
+    radial-gradient(40rem 30rem at 100% 4%, #ffd2c2 0%, transparent 70%),
     radial-gradient(46rem 34rem at 50% 60%, #ffe0d2 0%, transparent 70%),
-    radial-gradient(40rem 32rem at 100% 100%, #d9dcff 0%, transparent 70%),
-    #f5f3f8;
+    radial-gradient(40rem 32rem at 100% 100%, #ffe0d2 0%, transparent 70%),
+    #fff7f3;
   background-attachment: fixed;
 }
 
@@ -136,10 +137,10 @@ html body {
 .bb-btn--dark {
   background: var(--bb-dark);
   color: #fff;
-  box-shadow: 0 8px 18px -10px rgba(24, 22, 31, 0.7);
+  box-shadow: 0 8px 18px -10px rgba(43, 27, 74, 0.7);
 }
 .bb-btn--dark:hover {
-  background: #2c2937;
+  background: #3d2a63;
 }
 .bb-btn--glass {
   border-color: var(--bb-glass-edge);
@@ -335,7 +336,7 @@ html body {
   inline-size: 14px;
   block-size: 14px;
   border-radius: 50%;
-  box-shadow: inset 0 0 0 1.5px rgba(30, 20, 60, 0.25);
+  box-shadow: inset 0 0 0 1.5px rgba(43, 27, 74, 0.25);
 }
 .bb-tier[aria-pressed="true"] {
   border-color: var(--bb-dark);
@@ -392,7 +393,7 @@ html body {
   transition: background 0.15s ease;
 }
 .bb-addcart:hover {
-  background: #2c2937;
+  background: #3d2a63;
 }
 .bb-addcart:focus-visible {
   outline: 2px solid var(--bb-brand);
@@ -421,7 +422,7 @@ html body {
   inline-size: 64px;
   block-size: 3px;
   border-radius: 2px;
-  background: rgba(30, 20, 60, 0.09);
+  background: rgba(43, 27, 74, 0.09);
   overflow: hidden;
 }
 .bb-meter__fill {
@@ -942,7 +943,7 @@ html body {
   padding-block: 10px;
   padding-inline: 20px 14px;
   border-block-end: 1px solid var(--bb-line);
-  background: rgba(30, 20, 60, 0.025);
+  background: rgba(43, 27, 74, 0.025);
   font-size: 10.5px;
   font-weight: 500;
   letter-spacing: 0.1em;
@@ -972,7 +973,7 @@ html body {
   background: rgba(255, 255, 255, 0.55);
 }
 .bb-table__rows li.is-selected {
-  background: rgba(92, 45, 145, 0.05);
+  background: rgba(226, 67, 58, 0.05);
 }
 .bb-table__rows .bb-crow {
   padding-inline: 0;
@@ -990,7 +991,7 @@ html body {
   inline-size: 18px;
   block-size: 18px;
   margin: 0;
-  border: 1.5px solid var(--bb-line-strong, #c4bfdb);
+  border: 1.5px solid var(--bb-line-strong, #dccbc6);
   border-radius: 5px;
   background: #ffffff;
   cursor: pointer;
@@ -1001,7 +1002,7 @@ html body {
 }
 .bb-checkbox:hover {
   border-color: var(--bb-brand);
-  background: #faf8fd;
+  background: #fffaf7;
 }
 .bb-checkbox:checked {
   background: var(--bb-brand);
@@ -1036,8 +1037,8 @@ html body {
   justify-content: space-between;
   gap: 16px;
   padding: 10px 20px;
-  background: rgba(92, 45, 145, 0.08);
-  border-block-end: 1px solid rgba(92, 45, 145, 0.15);
+  background: rgba(226, 67, 58, 0.08);
+  border-block-end: 1px solid rgba(226, 67, 58, 0.15);
   animation: bb-fade 0.2s var(--bb-ease);
 }
 .bb-bulk-bar__info {
@@ -1099,7 +1100,7 @@ html body {
   color: var(--bb-ink);
   text-underline-offset: 3px;
   text-decoration-thickness: 1px;
-  text-decoration-color: rgba(30, 20, 60, 0.3);
+  text-decoration-color: rgba(43, 27, 74, 0.3);
 }
 .bb-crow:hover .bb-crow__name {
   text-decoration-line: underline;
@@ -1121,7 +1122,7 @@ html body {
 }
 .bb-state--draft::before,
 .bb-state--archived::before {
-  background: #b8b4c6;
+  background: #c9bcc4;
 }
 .bb-crow__num,
 .bb-crow__date {
@@ -1332,7 +1333,7 @@ html body {
   border: 0;
   margin: 0;
   border-radius: 10px;
-  background: rgba(30, 20, 60, 0.06);
+  background: rgba(43, 27, 74, 0.06);
 }
 .bb-segment label {
   position: relative;
@@ -1357,7 +1358,7 @@ html body {
 }
 .bb-segment input:checked + span {
   background: #fff;
-  box-shadow: 0 1px 2px rgba(30, 20, 60, 0.08), 0 4px 10px -6px rgba(30, 20, 60, 0.3);
+  box-shadow: 0 1px 2px rgba(43, 27, 74, 0.08), 0 4px 10px -6px rgba(43, 27, 74, 0.3);
   color: var(--bb-ink);
 }
 .bb-segment input:focus-visible + span {
@@ -1461,7 +1462,7 @@ html body {
   place-items: center;
   block-size: 32px;
   border-radius: 9px;
-  background: rgba(91, 71, 224, 0.08);
+  background: rgba(226, 67, 58, 0.08);
   font-size: 11px;
   font-weight: 600;
   color: var(--bb-brand);
@@ -1597,7 +1598,7 @@ html body {
   block-size: 20px;
   margin: 0;
   border-radius: 999px;
-  background: rgba(30, 20, 60, 0.16);
+  background: rgba(43, 27, 74, 0.16);
   cursor: pointer;
   transition: background 0.2s var(--bb-ease);
 }
@@ -1610,7 +1611,7 @@ html body {
   block-size: 16px;
   border-radius: 50%;
   background: #fff;
-  box-shadow: 0 1px 2px rgba(30, 20, 60, 0.25);
+  box-shadow: 0 1px 2px rgba(43, 27, 74, 0.25);
   transition: transform 0.2s var(--bb-ease);
 }
 .bb-toggle input:checked {
@@ -1645,7 +1646,7 @@ html body {
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 .bb-preset:hover {
-  border-color: rgba(30, 20, 60, 0.2);
+  border-color: rgba(43, 27, 74, 0.2);
 }
 .bb-preset[aria-pressed="true"] {
   border-color: var(--bb-dark);
@@ -1662,7 +1663,7 @@ html body {
   inline-size: 14px;
   block-size: 14px;
   border-radius: 50%;
-  box-shadow: 0 0 0 1.5px #fff, 0 0 0 2.5px rgba(30, 20, 60, 0.12);
+  box-shadow: 0 0 0 1.5px #fff, 0 0 0 2.5px rgba(43, 27, 74, 0.12);
 }
 .bb-preset__swatch i + i {
   margin-inline-start: -4px;
@@ -1703,17 +1704,17 @@ html body {
   padding: 14px;
   border-radius: 14px;
   background: #fff;
-  box-shadow: 0 0 0 1px var(--bb-line), 0 10px 24px -16px rgba(30, 20, 60, 0.35);
+  box-shadow: 0 0 0 1px var(--bb-line), 0 10px 24px -16px rgba(43, 27, 74, 0.35);
   font-size: 13px;
-  color: #1d1b26;
+  color: #2b1b4a;
 }
 .bb-mockpdp__image {
   aspect-ratio: 16 / 9;
   border-radius: 10px;
   background:
-    radial-gradient(60% 80% at 30% 30%, #e9e3ff 0%, transparent 70%),
+    radial-gradient(60% 80% at 30% 30%, #ffe9e1 0%, transparent 70%),
     radial-gradient(60% 80% at 80% 70%, #ffe4d8 0%, transparent 70%),
-    #f4f2f8;
+    #fdf4f0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1734,7 +1735,7 @@ html body {
 .bb-tshirt-svg {
   width: 72px;
   height: 72px;
-  filter: drop-shadow(0 4px 8px rgba(91, 71, 224, 0.15));
+  filter: drop-shadow(0 4px 8px rgba(226, 67, 58, 0.15));
 }
 .bb-device--mobile .bb-mockpdp__image {
   aspect-ratio: 1;
@@ -1746,12 +1747,12 @@ html body {
 .bb-mockpdp__price {
   margin-block-start: -6px;
   font-size: 13px;
-  color: #5d5a6b;
+  color: #6b5f80;
 }
 .bb-mockpdp__cart {
   padding: 11px;
   border-radius: 9px;
-  background: #18161f;
+  background: #2b1b4a;
   color: #fff;
   font-weight: 600;
   text-align: center;
@@ -1933,14 +1934,14 @@ html body {
   display: block;
   block-size: 8px;
   border-radius: 999px;
-  background: rgba(30, 20, 60, 0.07);
+  background: rgba(43, 27, 74, 0.07);
   overflow: hidden;
 }
 .bb-depth__fill {
   display: block;
   block-size: 100%;
   border-radius: 999px;
-  background: linear-gradient(90deg, #8f7dff, var(--bb-brand));
+  background: linear-gradient(90deg, #ff8a5b, var(--bb-brand));
   transform-origin: left center;
   animation: bb-grow 0.9s var(--bb-ease) 0.2s both;
 }
@@ -2170,7 +2171,7 @@ html body {
   display: block;
   block-size: 6px;
   border-radius: 999px;
-  background: rgba(30, 20, 60, 0.08);
+  background: rgba(43, 27, 74, 0.08);
   overflow: hidden;
 }
 .bb-usemeter__fill {
@@ -2200,9 +2201,9 @@ html body {
   padding: 22px 22px 20px;
 }
 .bb-plan--top {
-  border-color: rgba(91, 71, 224, 0.35);
-  background: linear-gradient(160deg, rgba(236, 232, 255, 0.85), rgba(255, 255, 255, 0.6));
-  box-shadow: 0 0 0 1px rgba(91, 71, 224, 0.25), var(--bb-lift);
+  border-color: rgba(226, 67, 58, 0.35);
+  background: linear-gradient(160deg, rgba(255, 236, 228, 0.85), rgba(255, 255, 255, 0.6));
+  box-shadow: 0 0 0 1px rgba(226, 67, 58, 0.25), var(--bb-lift);
 }
 .bb-plan--current {
   box-shadow: 0 0 0 2px var(--bb-dark), var(--bb-shadow);
@@ -2372,7 +2373,7 @@ html body {
   margin: 0;
   padding: 10px 14px;
   border-radius: 10px;
-  background: rgba(91, 71, 224, 0.08);
+  background: rgba(226, 67, 58, 0.08);
   font-size: 12.5px;
   font-weight: 550;
   color: var(--bb-brand);
@@ -2421,9 +2422,9 @@ html body {
   display: grid;
   gap: 6px;
   padding: 14px 16px;
-  border: 1px solid rgba(91, 71, 224, 0.25);
+  border: 1px solid rgba(226, 67, 58, 0.25);
   border-radius: 14px;
-  background: rgba(91, 71, 224, 0.07);
+  background: rgba(226, 67, 58, 0.07);
   font-size: 12.5px;
   line-height: 1.5;
   color: var(--bb-ink-2);
@@ -2607,7 +2608,7 @@ html body {
 .bb-subrow__link {
   color: inherit;
   text-decoration: underline;
-  text-decoration-color: rgba(91, 71, 224, 0.4);
+  text-decoration-color: rgba(226, 67, 58, 0.4);
   text-underline-offset: 3px;
 }
 .bb-subrow__link:hover {

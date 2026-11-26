@@ -272,9 +272,9 @@ function Insights({ data }: { data: OverviewData }) {
             label={`${total} campaigns: ${data.counts.ACTIVE} active, ${data.counts.PAUSED} paused, ${data.counts.DRAFT} draft`}
             center={{ value: total, caption: total === 1 ? "campaign" : "campaigns" }}
             segments={[
-              { key: "active", label: "Active", value: data.counts.ACTIVE, color: "#5b47e0" },
+              { key: "active", label: "Active", value: data.counts.ACTIVE, color: "#e2433a" },
               { key: "paused", label: "Paused", value: data.counts.PAUSED, color: "#eda100" },
-              { key: "draft", label: "Draft", value: data.counts.DRAFT, color: "#dcd8ec" },
+              { key: "draft", label: "Draft", value: data.counts.DRAFT, color: "#efe1dc" },
             ]}
           />
         ) : (
