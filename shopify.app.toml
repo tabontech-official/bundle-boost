@@ -7,7 +7,7 @@
 client_id = "4f89a504ab43c78ac4bd3017e4a315cc"
 application_url = "https://bundle-boost-theta.vercel.app"
 embedded = true
-name = "bundleboost"
+name = "SaleLoop"
 
 [access_scopes]
 # Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
@@ -25,7 +25,7 @@ scopes = "read_products,write_products,write_discounts,write_purchase_options,re
 # by the app; merchants can view but not edit it.
 [discount.metafields.app.function-configuration]
 type = "json"
-name = "BundleBoost configuration"
+name = "SaleLoop configuration"
 
   [discount.metafields.app.function-configuration.access]
   admin = "merchant_read"

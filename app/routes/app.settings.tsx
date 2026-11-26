@@ -174,7 +174,7 @@ export default function Settings() {
             <EditorCard
               num="02"
               title="Combinations"
-              hint="Choose which other Shopify discounts can apply together with BundleBoost’s."
+              hint="Choose which other Shopify discounts can apply together with SaleLoop’s."
               aside={affected > 0 && `updates ${plural(affected, "campaign")}`}
             >
               <div className="bb-toggles">
@@ -215,7 +215,7 @@ export default function Settings() {
                 </li>
                 <li>
                   <strong>Customer requests</strong>
-                  <span>When a customer asks your store to erase their data, BundleBoost removes their details too.</span>
+                  <span>When a customer asks your store to erase their data, SaleLoop removes their details too.</span>
                 </li>
                 <li>
                   <strong>If you uninstall</strong>
@@ -249,7 +249,7 @@ export default function Settings() {
                 </div>
               </dl>
             </EditorCard>
-            <EditorCard title="Permissions" hint="What BundleBoost can access in your store.">
+            <EditorCard title="Permissions" hint="What SaleLoop can access in your store.">
               <div className="bb-chips bb-chips--tight">
                 {scopes.length ? (
                   scopes.map((scope) => (

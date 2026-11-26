@@ -98,7 +98,7 @@ export function BillingView({ data }: { data: BillingViewData }) {
           <dl className="bb-faq">
             <div>
               <dt>Who charges me?</dt>
-              <dd>Shopify. The plan is added to your regular Shopify invoice; BundleBoost never sees your payment details.</dd>
+              <dd>Shopify. The plan is added to your regular Shopify invoice; SaleLoop never sees your payment details.</dd>
             </div>
             <div>
               <dt>What happens when I change plan?</dt>

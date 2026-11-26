@@ -25,7 +25,7 @@ const plural = (n: number, word: string) => `${number.format(n)} ${word}${n === 
 
 /**
  * Dashboard: a personal hero with a working preview, the go-live steps until
- * they're done, campaign numbers, and what BundleBoost can do. Router-only
+ * they're done, campaign numbers, and what SaleLoop can do. Router-only
  * dependency is <Link>, so it renders anywhere a router exists.
  */
 export function OverviewView({
@@ -112,7 +112,7 @@ function Hero({
     <section className="bb-hero">
       <div>
         <span className="bb-brand">
-          <strong>BundleBoost</strong>
+          <strong>SaleLoop</strong>
           <small>Quantity breaks &amp; volume discounts</small>
         </span>
         <span className={state.className}>{state.text}</span>

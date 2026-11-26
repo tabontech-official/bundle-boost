@@ -18,9 +18,9 @@ export default function Auth() {
   return (
     <AppProvider embedded={false}>
       <s-page>
-        <s-section heading="Open BundleBoost from Shopify">
+        <s-section heading="Open SaleLoop from Shopify">
           <s-paragraph>
-            Open BundleBoost from your Shopify admin (Apps → BundleBoost), or install it from the Shopify App Store.
+            Open SaleLoop from your Shopify admin (Apps → SaleLoop), or install it from the Shopify App Store.
           </s-paragraph>
           {errors.shop && <s-paragraph tone="critical">{errors.shop}</s-paragraph>}
         </s-section>

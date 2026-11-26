@@ -14,7 +14,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 };
 
 export const meta: MetaFunction = () => [
-  { title: "BundleBoost: quantity breaks, volume discounts and subscriptions for Shopify" },
+  { title: "SaleLoop: quantity breaks, volume discounts and subscriptions for Shopify" },
   {
     name: "description",
     content:
@@ -48,7 +48,7 @@ const STEPS = [
   },
   {
     title: "Add the block to your theme",
-    body: "Place the BundleBoost block on your product page in the theme editor. No code needed.",
+    body: "Place the SaleLoop block on your product page in the theme editor. No code needed.",
   },
   {
     title: "Watch order values grow",
@@ -73,7 +73,7 @@ export default function Landing() {
       <header className={styles.top}>
         <a className={styles.brand} href="/">
           <img src="/bundleboost-icon.svg" alt="" width={36} height={36} />
-          <span>BundleBoost</span>
+          <span>SaleLoop</span>
         </a>
         <span className={styles.pill}>Shopify app</span>
       </header>
@@ -86,20 +86,20 @@ export default function Landing() {
               Sell more per order with <em>quantity breaks</em> and subscriptions
             </h1>
             <p className={styles.lede}>
-              BundleBoost rewards customers for buying more. Offer &ldquo;buy more, save more&rdquo; tiers on the
+              SaleLoop rewards customers for buying more. Offer &ldquo;buy more, save more&rdquo; tiers on the
               products you choose, show the savings right on the product page, and let customers subscribe for
               repeat deliveries.
             </p>
             <p className={styles.howToOpen}>
               <span className={styles.dot} aria-hidden="true" />
               <span>
-                Install BundleBoost from the Shopify App Store. Already installed? Open it from your Shopify admin
-                under <strong>Apps → BundleBoost</strong>.
+                Install SaleLoop from the Shopify App Store. Already installed? Open it from your Shopify admin
+                under <strong>Apps → SaleLoop</strong>.
               </span>
             </p>
           </div>
 
-          <figure className={styles.example} aria-label="Example of the BundleBoost block on a product page">
+          <figure className={styles.example} aria-label="Example of the SaleLoop block on a product page">
             <div className={styles.exampleHead}>
               <p className={styles.exampleHeading}>Buy more, save more</p>
               <span className={styles.exampleTag}>On your product page</span>
@@ -201,7 +201,7 @@ export default function Landing() {
 
       <footer className={styles.footer}>
         <p>
-          BundleBoost works inside your Shopify admin. Discounts run in Shopify checkout, and card details stay with
+          SaleLoop works inside your Shopify admin. Discounts run in Shopify checkout, and card details stay with
           Shopify.
         </p>
         <p className={styles.footerLinks}>

@@ -1,4 +1,4 @@
 {
-  "name": "BundleBoost quantity breaks",
-  "description": "Applies BundleBoost quantity-break tiers to eligible cart lines."
+  "name": "SaleLoop quantity breaks",
+  "description": "Applies SaleLoop quantity-break tiers to eligible cart lines."
 }

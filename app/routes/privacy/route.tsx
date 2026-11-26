@@ -5,8 +5,8 @@ import styles from "../_index/styles.module.css";
 export const loader = () => ({ supportEmail: env().SUPPORT_EMAIL ?? null });
 
 export const meta: MetaFunction = () => [
-  { title: "Privacy policy · BundleBoost" },
-  { name: "description", content: "How BundleBoost collects, uses and deletes data for Shopify merchants and their customers." },
+  { title: "Privacy policy · SaleLoop" },
+  { name: "description", content: "How SaleLoop collects, uses and deletes data for Shopify merchants and their customers." },
 ];
 
 const UPDATED = "November 26, 2026";
@@ -25,7 +25,7 @@ export default function Privacy() {
       <header className={styles.top}>
         <a className={styles.brand} href="/">
           <img src="/bundleboost-icon.svg" alt="" width={36} height={36} />
-          <span>BundleBoost</span>
+          <span>SaleLoop</span>
         </a>
         <span className={styles.pill}>Privacy policy</span>
       </header>
@@ -35,7 +35,7 @@ export default function Privacy() {
         <p className={styles.note}>Last updated {UPDATED}</p>
 
         <p>
-          BundleBoost (&ldquo;the app&rdquo;, &ldquo;we&rdquo;) is a Shopify app by Tak ledger that adds quantity
+          SaleLoop (&ldquo;the app&rdquo;, &ldquo;we&rdquo;) is a Shopify app by Tak ledger that adds quantity
           discounts and subscriptions to Shopify stores. This policy explains what data the app collects when a
           merchant installs it, how that data is used, and how it&rsquo;s deleted.
         </p>
@@ -53,11 +53,11 @@ export default function Privacy() {
             An activity log of changes made in the app (for example &ldquo;campaign activated&rdquo;), with the Shopify
             staff ID that made them.
           </li>
-          <li>Your BundleBoost plan and its status, from Shopify billing.</li>
+          <li>Your SaleLoop plan and its status, from Shopify billing.</li>
         </ul>
 
         <h3>About your customers (subscriptions only)</h3>
-        <p>When a customer buys on a BundleBoost subscription plan, the app stores:</p>
+        <p>When a customer buys on a SaleLoop subscription plan, the app stores:</p>
         <ul>
           <li>the customer&rsquo;s name and email address, and their Shopify customer ID;</li>
           <li>the first order number, the subscribed items, price and delivery frequency;</li>
@@ -123,7 +123,7 @@ export default function Privacy() {
 
       <footer className={styles.footer}>
         <p>
-          <a href="/">BundleBoost</a> · Privacy policy
+          <a href="/">SaleLoop</a> · Privacy policy
         </p>
       </footer>
     </div>

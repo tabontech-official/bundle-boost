@@ -1,4 +1,4 @@
-BundleBoost adds quantity breaks and recurring delivery plans to a store, plus a page where customers manage their subscriptions. No separate account is needed.
+SaleLoop adds quantity breaks and recurring delivery plans to a store, plus a page where customers manage their subscriptions. No separate account is needed.
 
 Before testing
 1. Install the app and open it from Apps in the Shopify admin.
@@ -22,7 +22,7 @@ Customer subscription page
 2. In the store, click the account icon and sign in with the email used for the subscription order.
 3. Open My subscriptions from the account menu. It shows the status, next order, price, delivery frequency, payment method, delivery address and order history.
 4. Test Skip next order and Undo, Pause, Resume, Cancel, Change address and Update payment method. Shopify emails a secure link for the payment method. If the plan has two or more frequencies, the delivery frequency can be changed too. Every change also shows on the Subscribers page.
-5. Optional: in Settings, open Checkout and click Customize to open the customer accounts editor. Add the BundleBoost block to the Order status page and the Profile page, then save. They link to My subscriptions.
+5. Optional: in Settings, open Checkout and click Customize to open the customer accounts editor. Add the SaleLoop block to the Order status page and the Profile page, then save. They link to My subscriptions.
 
 Billing
 On the Billing page, choose Growth or Pro and approve the plan. Development stores get a test charge. Choose Free to go back.

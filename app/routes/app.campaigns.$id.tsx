@@ -208,7 +208,7 @@ export default function CampaignDetailPage() {
         banners={
           campaign.syncStatus === "ERROR" && (
             <s-banner tone="critical" heading="Shopify checkout isn’t up to date">
-              {campaign.syncError ?? "Shopify couldn’t be updated."} Your changes are saved in BundleBoost; checkout
+              {campaign.syncError ?? "Shopify couldn’t be updated."} Your changes are saved in SaleLoop; checkout
               still reflects the last successful sync.
               <s-button
                 slot="secondary-actions"

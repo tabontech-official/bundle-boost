@@ -1,7 +1,7 @@
-# BundleBoost: Shopify App Store listing
+# SaleLoop: Shopify App Store listing
 
 Copy each field into the Partner Dashboard / Dev Dashboard listing form
-(Apps → BundleBoost → Distribution → App Store listing). Character counts are
+(Apps → SaleLoop → Distribution → App Store listing). Character counts are
 shown in brackets; the form shows each field's limit too, so check them there.
 
 ---
@@ -24,62 +24,75 @@ shown in brackets; the form shows each field's limit too, so check them there.
 
 ---
 
-## 1. App name  `[27]`
+## 1. App name
 
 ```
-BundleBoost Quantity Breaks
+SaleLoop
 ```
 
-Brand + the main search phrase. Don't use "Shopify", prices or claims like
-"#1" in the name.
+Optional descriptor, if the form allows up to 30 characters:
+`SaleLoop: Buy More & Repeat` (27). Don't use "Shopify", prices or claims
+like "#1" in the name. Internal identifiers (the `bundleboost` plan tag,
+metafield namespace, extension handles) stay as they are.
 
 ## 2. App icon
 
-`branding/app-icon.png` (1200 × 1200 px, the Bundle Stack icon). No text in
-the icon.
+`branding/app-icon.png` (1200 × 1200 px). No text in the icon.
 
-## 3. App card subtitle  `[54]`
-
-Shown under the name in search results.
+## 3. App card subtitle  `[59]`
 
 ```
-Volume discounts, quantity breaks & Subscribe and save
+Sell more per order with quantity breaks and repeat orders.
 ```
 
 ## 4. Search terms (up to 5)
 
 ```
 volume discount
-quantity breaks
+quantity discount
+buy more save more
 tiered pricing
-bulk discount
-subscribe and save
+subscriptions
 ```
 
-## 5. App introduction  `[90]`
+## 5. App introduction  `[98]`
+
+No `%`, "offer" or "subscribe" (Shopify's review tips flag them as
+statistics or pricing).
 
 ```
-Grow order value with tiered quantity discounts and Subscribe & save, applied at checkout.
+Quantity breaks and recurring delivery plans. Customers buy more per order and come back for more.
 ```
 
-## 6. App details  `[494]`
+## 6. App details  `[470]`
 
 ```
-BundleBoost turns single-item orders into bigger baskets. Create quantity breaks like Buy 2, save 10% and Buy 5, save 20%, as a percentage or a fixed amount off each item, on the products or variants you choose. A theme block shows every tier, the price per item and the savings on the product page, and the discount is applied automatically at Shopify checkout, with no codes. Add Subscribe & save plans with automatic renewals, and let customers manage their subscriptions from their account.
+SaleLoop helps you sell more in every order and turn one-time buyers into repeat customers. Create quantity breaks on the products you choose, with a bigger discount for each extra item, as a percentage or a fixed amount. The tiers and savings show on your product page, and Shopify applies the discount at checkout with no code. You can also sell products on recurring delivery plans that renew automatically, and customers manage their own plans from their account.
 ```
 
-## 7. Features (one per line)
+## 7. Features (5, up to 80 characters each)
 
 ```
-Tiered volume discounts: percentage or fixed amount off each item
-Applied automatically at checkout as a Shopify discount, no codes
-Product page block shows tiers, price per item and savings
-Target whole products or specific variants; variants count together
-Subscribe & save plans with any delivery frequency and discount
-Automatic renewals with retries for failed payments
-Customers skip, pause or cancel subscriptions in their account
-Match your brand: text, layout and colours, with a live preview
+Quantity breaks with a percentage or fixed amount off each extra item
+Discount applied automatically at checkout, with no code for customers
+Product page block that shows every tier and the savings, matched to your brand
+Recurring delivery plans with automatic renewals and failed payment retries
+Customers skip, pause or cancel their own plans from their account
 ```
+
+## Web search content
+
+- **Title tag** `[46]`: `SaleLoop – Quantity Breaks & Subscriptions App`
+- **Meta description** `[152]`: `Add quantity breaks and volume discounts to your store. Show the savings on product pages, apply them at checkout, and sell on recurring delivery plans.`
+
+## Media
+
+- **Feature image:** `branding/feature-media-1600x900.png`. Alt text:
+  `SaleLoop quantity breaks block on a product page, showing three tiers, the discounted price and a monthly delivery plan.`
+- **Screenshots:** `branding/screenshots/` (1600 × 900), with alt texts:
+  1. `Product page block showing quantity tiers and savings`
+  2. `Campaign editor with quantity tiers and a live preview`
+  3. `Customer account page to skip, pause or cancel a subscription`
 
 ## 8. Categories and tags
 
@@ -148,7 +161,7 @@ dev store:
 ## 12. Testing instructions for the reviewer
 
 ```
-1. Install BundleBoost and open it from Apps.
+1. Install SaleLoop and open it from Apps.
 2. Campaigns → Create campaign: choose any product, keep the sample tiers, Save draft, then Activate.
 3. Online Store → Themes → Customize → a product page → Add block → Apps → "Quantity breaks". Save.
 4. On the storefront, open that product: the block lists the tiers; selecting one updates the price and quantity. Add to cart and go to checkout: the discount is applied automatically.

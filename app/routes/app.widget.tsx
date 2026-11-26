@@ -534,7 +534,7 @@ export default function WidgetCustomization() {
               title="Purchase options"
               hint={
                 can("oneTimeLabel") ? (
-                  "One-time purchase or Subscribe & save, with a delivery frequency. Shown on products in your BundleBoost subscription plans."
+                  "One-time purchase or Subscribe & save, with a delivery frequency. Shown on products in your SaleLoop subscription plans."
                 ) : (
                   <>Custom labels are on Growth.{upgrade("Growth")}</>
                 )
@@ -790,7 +790,7 @@ export default function WidgetCustomization() {
 
             <EditorCard num="06" title="Add it to your theme">
               <ol className="bb-howto">
-                <li>Open the theme editor. It starts on a product page with the BundleBoost block added.</li>
+                <li>Open the theme editor. It starts on a product page with the SaleLoop block added.</li>
                 <li>Drag the block under the price or the Add to cart button.</li>
                 <li>Select Save in the theme editor.</li>
               </ol>
@@ -867,7 +867,7 @@ export default function WidgetCustomization() {
                       </div>
                     )}
                   </div>
-                  <div className="bb-mockpdp__title">{previewCampaign?.productTitle ?? "BundleBoost Classic T-Shirt"}</div>
+                  <div className="bb-mockpdp__title">{previewCampaign?.productTitle ?? "SaleLoop Classic T-Shirt"}</div>
                   <div className="bb-mockpdp__price">
                     {new Intl.NumberFormat("en-US", { style: "currency", currency: currencyCode ?? "USD" }).format(24)}
                   </div>

@@ -153,7 +153,7 @@ export function AnalyticsView({ data }: { data: AnalyticsViewData }) {
               Sales <em>impact</em>
             </h3>
             <p>
-              Once BundleBoost reads orders, this shows the results of your discounts — counted from real orders only.
+              Once SaleLoop reads orders, this shows the results of your discounts — counted from real orders only.
             </p>
             <ul className="bb-soonlist">
               <li>Orders that used a quantity break</li>

@@ -50,7 +50,7 @@ export default function SubscriptionPlans() {
           </h1>
           <p className="bb-lede">
             Create subscription plans with any delivery frequency (weekly, monthly, quarterly or your own) and a
-            discount for each. Shoppers choose them in the BundleBoost widget.
+            discount for each. Shoppers choose them in the SaleLoop widget.
           </p>
         </header>
 

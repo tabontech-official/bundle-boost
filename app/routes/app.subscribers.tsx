@@ -204,7 +204,7 @@ export default function Subscribers() {
             Your <em>subscribers</em>
           </h1>
           <p className="bb-lede">
-            Everyone subscribed on your BundleBoost plans. Renewals are charged automatically when they’re due. A
+            Everyone subscribed on your SaleLoop plans. Renewals are charged automatically when they’re due. A
             failed payment is retried after 1 and 3 days, and the subscription is paused after {maxAttempts} failed
             attempts.
           </p>

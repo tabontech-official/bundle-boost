@@ -135,7 +135,7 @@ export function CampaignForm({
   /** Tier allowance of the shop's plan, and the plan's name for the prompt. */
   maxTiers?: number;
   planName?: string;
-  /** Products offered on a BundleBoost subscription plan. */
+  /** Products offered on a SaleLoop subscription plan. */
   planProductGids?: string[];
 }) {
   const fetcher = useFetcher<ActionResult>();
@@ -316,7 +316,7 @@ export function CampaignForm({
               title="Subscriptions"
               hint={
                 showSubscriptionOptions
-                  ? "Choose whether the discount applies to one-time purchases, subscriptions, or both. Subscriptions are bought on your BundleBoost subscription plans."
+                  ? "Choose whether the discount applies to one-time purchases, subscriptions, or both. Subscriptions are bought on your SaleLoop subscription plans."
                   : undefined
               }
             >
